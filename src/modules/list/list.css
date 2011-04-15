@@ -1,6 +1,7 @@
 .list ul{
   
   background: -webkit-gradient( linear, left top, left bottom, from(#EEE), to(#DDD));
+  background: -moz-linear-gradient(top, #eee, #ddd);  
   padding: 1em;
   list-style: none;
   margin: 2em;
@@ -18,6 +19,7 @@
 
 .list li:hover{
   background: -webkit-gradient( linear, left top, left bottom, from(#f5fff7), to(#ddffe1));  
+  background: -moz-linear-gradient(top, #f5fff7, #ddffe1);  
 }
   
 .list li .button{
@@ -28,9 +30,9 @@
   margin-right: 0.4em;
 /*   margin-bottom: -0.5em; */
   cursor: pointer;
-    background-size: 100% 100%;
-    margin-bottom: -0.2em;
-    text-align: center;
+  background-size: 100% 100%;
+  margin-bottom: -0.2em;
+  text-align: center;
 }
 
 .list li .button.due{
