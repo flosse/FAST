@@ -1,0 +1,66 @@
+.list ul{
+  
+  background: -webkit-gradient( linear, left top, left bottom, from(#EEE), to(#DDD));
+  padding: 1em;
+  list-style: none;
+  margin: 2em;
+  border-radius: 0.5em;
+  border: 1px solid #CCC;
+  color: #555;
+}
+
+.list li{
+  padding: 0.2em;  
+  cursor: pointer;
+  border-radius: 0.4em;
+/*   padding: 0.4em; */
+}
+
+.list li:hover{
+  background: -webkit-gradient( linear, left top, left bottom, from(#f5fff7), to(#ddffe1));  
+}
+  
+.list li .button{
+  width: 1.1em;
+  height: 1.1em;
+  display: inline-block;  
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+/*   margin-bottom: -0.5em; */
+  cursor: pointer;
+    background-size: 100% 100%;
+    margin-bottom: -0.2em;
+    text-align: center;
+}
+
+.list li .button.due{
+  background-image: url("img/due.svg");
+  border: none;
+  width: 1.2em;
+  height: 1.2em;
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+  margin-bottom: -0.2em;
+}
+
+.list li a.button {
+  margin-bottom: -0.2em;
+}
+
+.list li .button.due:hover{
+  background-image: url("img/due_hover.svg");
+}
+
+.list li .button.done{
+  background-image: url("img/done.svg");
+}
+
+.list li .button.done.done:hover{
+  background-image: url("../img/undue.svg");
+}
+
+.list li.done,
+li .done,
+li.done a{
+  text-decoration: line-through;
+}
