@@ -26,9 +26,15 @@ var fast = fast || (function( window, undefined ){
     scaleApp.register("list", fast.modules.list.controller,{
       models: { model: fast.modules.list.model },
       views: { view: fast.modules.list.view },
-      templates: { list: "modules/list/list.html" },
-      
+      templates: { list: "modules/list/list.html" },      
       i18n: fast.modules.list.i18n      
+    });
+    
+    scaleApp.register("context", fast.modules.context.controller,{
+      models: { model: fast.modules.context.model },
+      views: { view: fast.modules.context.view },
+      templates: { list: "modules/context/context.html" },      
+      i18n: fast.modules.context.i18n
     }); 
     
     scaleApp.startAll();  

@@ -42,7 +42,10 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     */        
     var create = function( ev ){      
       var e = new entry( getUniqueId( ev.title ), ev.title );      
-      collection.entries[ e.id ] = e;
+      if( typeof ev.contexts ){ 
+	e.contexts = ev.contexts;
+      }
+      collection.entries[ e.id ] = e;      
       saveData( collection.entries );
       collection.notify();
     };
@@ -145,7 +148,8 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     
     return({
       id: id,
-      title: title
+      title: title,
+      contexts: []      
     });    
     
   };  
