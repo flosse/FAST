@@ -44,6 +44,13 @@ var fast = fast || (function( window, undefined ){
       i18n: fast.modules.context.i18n
     }); 
     
+    scaleApp.register("detail", fast.modules.detail.controller,{
+      models: { model: fast.modules.detail.model },
+      views: { view: fast.modules.detail.view },
+      templates: { detail: "modules/detail/detail.html" },      
+      i18n: fast.modules.detail.i18n
+    }); 
+    
     scaleApp.startAll();  
     
   };

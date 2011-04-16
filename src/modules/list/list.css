@@ -17,6 +17,11 @@
 /*   padding: 0.4em; */
 }
 
+.list li.selected{
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
+  background: -moz-linear-gradient(top, #ddd, #ccc);  
+}
+
 .list li:hover{
   background: -webkit-gradient( linear, left top, left bottom, from(#f5fff7), to(#ddffe1));  
   background: -moz-linear-gradient(top, #f5fff7, #ddffe1);  

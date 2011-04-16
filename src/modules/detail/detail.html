@@ -1,0 +1,7 @@
+<h3>${title}</h3>
+<ul>
+  <li><label>${label_name}</label>${name}</li>
+  <li><label>${label_contexts}</label>{{each contexts}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}</li>
+  <li><label>${label_new}</label>${isNew}</li>
+  <li><label>${label_done}</label>${isDone}</li>  
+</ul>

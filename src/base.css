@@ -5,8 +5,8 @@ html{
 body{
   margin: 0;
   padding: 0;
-  background: #f7f7f7;  
-  font-family: sans-serif;    
+  background: #f7f7f7;
+  font-family: sans-serif;
 }
 
 a{
@@ -51,15 +51,19 @@ input:focus{
 .content article{
  -webkit-box-flex: 10; 
  -moz-box-flex: 10; 
+ min-width: 280px;
 }
 
 .content aside{
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1; 
+
 }
 
 .content aside.left{
-  
+  min-width: 200px;
+}
+
+.content aside.right{
+  min-width: 300px;
 }
 
 .widget{  

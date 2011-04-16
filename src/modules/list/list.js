@@ -174,6 +174,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       c = sb.getContainer();
       c.delegate( "a.due",'click', done );
       c.delegate( "a.done",'click', undo );
+      c.delegate( "li",'click', select );
       ulTmpl = sb.getTemplate("list");      
       model.subscribe( this );     
     };
@@ -202,12 +203,19 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       sb.publish("collection/undo", id );
     }
     
+    var select = function( ev ){
+      id = $(this).attr("id");
+      model.selected[0] = id;
+      model.notify();
+      sb.publish("collection/select", id );
+    };
+    
     /**
     * Function: update
     */
     var update = function(){
       c.empty();
-      sb.tmpl( ulTmpl, { entries: model.filtered } ).appendTo( c );
+      sb.tmpl( ulTmpl, { entries: model.filtered, selected: model.selected[0]  } ).appendTo( c );
     };
         
     // public API
@@ -226,7 +234,8 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     filter: {
       context: keywords.ALL,
       box: keywords.ALL
-    }
+    },
+    selected:[]
   };
   
   // public API

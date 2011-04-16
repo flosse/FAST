@@ -1,0 +1,11 @@
+.detail{
+
+}
+
+.detail li{
+  padding: 0.8em;
+}
+.detail label{
+  font-weight: bold;
+  margin-right: 0.5em;
+}
