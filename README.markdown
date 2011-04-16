@@ -6,6 +6,12 @@ FAST is a little ToDo web application that acts as a demo for [scaleApp](https:/
 
 Play around with the [demo](http://scaleapp.org/demo/fast/) and have fun!
 
+## Contexts
+
+You can add a task with a context by using 'c' as a Keyword followed by your context name(s):
+
+    myTaskname#cMyContext
+
 ## Supported Browsers 
 
 FAST was only tested with
