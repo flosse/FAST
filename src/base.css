@@ -33,8 +33,8 @@ input:focus{
 
 .banner{
   padding: 0.8em;
-  background: -webkit-gradient( linear, left top, left bottom, from(#444), to(#111));
-  background: -moz-linear-gradient(top, #444, #111); 
+  background: -webkit-gradient( linear, left top, left bottom, from(#666), to(#222));
+  background: -moz-linear-gradient(top, #666, #222); 
   box-shadow: 0px 5px 5px rgba(0,0,0,0.4);
 }
 

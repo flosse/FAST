@@ -1,5 +1,5 @@
 <ul>
 {{each entries}} 
-  <li id="${id}"><div><a class="button due"></a><a href="#">${title}</a></div></li>
+  <li id="${id}"><div><a class="button {{if done }}done{{else}}due{{/if}}"></a><a href="#">${title}</a></div></li>
 {{/each}}
 </ul>

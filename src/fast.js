@@ -30,6 +30,13 @@ var fast = fast || (function( window, undefined ){
       i18n: fast.modules.list.i18n      
     });
     
+    scaleApp.register("box", fast.modules.box.controller,{
+      models: { model: fast.modules.box.model },
+      views: { view: fast.modules.box.view },
+      templates: { list: "modules/box/box.html" },      
+      i18n: fast.modules.box.i18n
+    }); 
+    
     scaleApp.register("context", fast.modules.context.controller,{
       models: { model: fast.modules.context.model },
       views: { view: fast.modules.context.view },

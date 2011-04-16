@@ -64,7 +64,32 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
 	  }
 	}
 	return entries;      
-      }      
+      },
+      byBox: function( items, box ){
+	var entries = { };
+	switch( box ){
+	  case "ALL":
+	    for( var i in items ){
+	      entries[i] = items[i];
+	    }
+	    break;
+	  case "DONE":
+	    for( var i in items ){
+	      if( items[i].done === true ){
+		entries[i] = items[i];		
+	      }
+	    }
+	    break;
+	  case "NEW":
+	    for( var i in items ){
+	      if( items[i].new === true ){
+		entries[i] = items[i];		
+	      }
+	    }
+	    break;
+	}
+	return entries; 
+      }
     };
     
     /**
@@ -72,7 +97,6 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var onCollectionChanged = function( c ){
       model.collection = c;
-      model.filtered = filter.byContext( model.collection, model.context );
       model.notify();
     };
     
@@ -80,9 +104,27 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     * Function: onContextChanged
     */
     var onContextChanged = function( c ){
-      model.filtered = filter.byContext( model.collection, c );
+      model.filter.context = c;
+      refilter();
       model.notify();
     };
+    
+    /**
+    * Function: onBoxChanged
+    */    
+    var onBoxChanged = function( b ){
+      model.filter.box = b;
+      refilter();
+      model.notify();
+    };
+    
+    /**
+    * Function: refilter
+    */
+    var refilter = function(){
+      model.filtered = filter.byBox( model.collection, model.filter.box );
+      model.filtered = filter.byContext( model.filtered, model.filter.context );
+    }
     
     /**
     * Function: init
@@ -95,6 +137,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       
       sb.subscribe("collection/changed", onCollectionChanged );
       sb.subscribe("context/changed", onContextChanged );
+      sb.subscribe("box/changed", onBoxChanged );
       sb.publish("collection/refresh");
     };
     
@@ -129,7 +172,8 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       sb = s;
       model = m;
       c = sb.getContainer();
-      c.delegate( "a.due",'click', remove );
+      c.delegate( "a.due",'click', done );
+      c.delegate( "a.done",'click', undo );
       ulTmpl = sb.getTemplate("list");      
       model.subscribe( this );     
     };
@@ -140,6 +184,22 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     var remove = function( ev ){
       id = $(this).parent().parent().attr("id");
       sb.publish("collection/delete", id );
+    }
+    
+    /**
+    * Function: done
+    */
+    var done = function( ev ){
+      id = $(this).parent().parent().attr("id");
+      sb.publish("collection/done", id );
+    }
+    
+    /**
+    * Function: undo
+    */
+    var undo = function( ev ){
+      id = $(this).parent().parent().attr("id");
+      sb.publish("collection/undo", id );
     }
     
     /**
@@ -162,8 +222,11 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
   */
   var model = {
     collection: {},
-    filtered: {},
-    context: keywords.ALL
+    filtered: {},    
+    filter: {
+      context: keywords.ALL,
+      box: keywords.ALL
+    }
   };
   
   // public API

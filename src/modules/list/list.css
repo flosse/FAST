@@ -58,7 +58,7 @@
 }
 
 .list li .button.done.done:hover{
-  background-image: url("../img/undue.svg");
+  background-image: url("img/undue.svg");
 }
 
 .list li.done,

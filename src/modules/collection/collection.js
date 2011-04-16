@@ -60,6 +60,31 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     };
     
     /**
+    * Function: done
+    */        
+    var done = function( id ){      
+      changeProperty( id, 'done', true );
+      changeProperty( id, 'new', false );
+    };
+    
+    /**
+    * Function: undo
+    */        
+    var undo = function( id ){
+      changeProperty( id, 'done', false );      
+      changeProperty( id, 'new', true );
+    };
+    
+    /**
+    * Function: changeProperty
+    */        
+    var changeProperty = function( id, property, value ){      
+      collection.entries[ id ][property] = value;
+      saveData( collection.entries );
+      collection.notify();
+    };
+    
+    /**
     * Function: update
     */            
     var update = function(){      
@@ -114,6 +139,8 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       
       entry = sb.getModel("entry");      
       sb.subscribe("collection/create", create );
+      sb.subscribe("collection/done", done );
+      sb.subscribe("collection/undo", undo );
       sb.subscribe("collection/delete", remove );
       sb.subscribe("collection/refresh", update );
       
@@ -149,7 +176,9 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     return({
       id: id,
       title: title,
-      contexts: []      
+      contexts: [],
+      new: true,
+      done: false
     });    
     
   };  
