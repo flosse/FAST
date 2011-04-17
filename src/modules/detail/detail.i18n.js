@@ -8,6 +8,7 @@ fast.modules.detail.i18n = fast.modules.detail.i18n || {
     Name: "Name",
     Yes: "Yes",
     No: "No",
+    delete: "delete"
   }, 
   de: {
     Details: "Details",
@@ -18,5 +19,6 @@ fast.modules.detail.i18n = fast.modules.detail.i18n || {
     Name: "Name",
     Yes: "Ja",
     No: "Nein",
+    delete: "löschen"
   }  
 };

@@ -26,43 +26,36 @@
   background: -webkit-gradient( linear, left top, left bottom, from(#f5fff7), to(#ddffe1));  
   background: -moz-linear-gradient(top, #f5fff7, #ddffe1);  
 }
-  
-.list li .button{
+.list li button{
+  border: none;  
+  margin-left: 0.4em;
   width: 1.1em;
   height: 1.1em;
-  display: inline-block;  
-  margin-left: 0.4em;
   margin-right: 0.4em;
-/*   margin-bottom: -0.5em; */
-  cursor: pointer;
-  background-size: 100% 100%;
   margin-bottom: -0.2em;
-  text-align: center;
+  background: transparent;
+  background-size: 100% 100%;  
 }
 
-.list li .button.due{
+.list li button.due{
   background-image: url("img/due.svg");
-  border: none;
-  width: 1.2em;
-  height: 1.2em;
-  margin-left: 0.4em;
-  margin-right: 0.4em;
-  margin-bottom: -0.2em;
+  border: none;  
+  
 }
 
 .list li a.button {
   margin-bottom: -0.2em;
 }
 
-.list li .button.due:hover{
+.list li button.due:hover{
   background-image: url("img/due_hover.svg");
 }
 
-.list li .button.done{
+.list li button.done{
   background-image: url("img/done.svg");
 }
 
-.list li .button.done.done:hover{
+.list li button.done.done:hover{
   background-image: url("img/undue.svg");
 }
 

@@ -4,8 +4,63 @@
 
 .detail li{
   padding: 0.8em;
+  cursor: default;
+}
+
+.detail li:hover{
+  background: transparent;  
 }
 .detail label{
   font-weight: bold;
   margin-right: 0.5em;
+}
+
+.detail .toolbar{
+  background: -webkit-gradient( linear, left top, left bottom, from(#eee), to(#ddd));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+  padding: 0.4em;
+}
+
+.detail button{
+  border: 1px solid #aaa;  
+  border-radius: 0.3em;
+  color: #555;
+  background-size: 100% 100%;  
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+}
+
+.detail button:hover{
+  color: #222;
+}
+.detail button:active{
+  background: -webkit-gradient( linear, left top, left bottom, from(#ccc), to(#ddd));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+}
+
+.detail button.due{
+  background: transparent;
+  background-image: url("img/due.svg");
+  width: 1.4em;
+  height: 1.4em;
+  border: none;    
+  margin-bottom: -0.2em;
+  margin-right: 0.4em;
+}
+
+.detail button.due:hover{
+  background-image: url("img/due_hover.svg");
+}
+
+.detail button.done{
+  background-image: url("img/done.svg");
+  width: 1.4em;
+  height: 1.4em;
+  border: none; 
+  margin-bottom: -0.2em;
+  margin-right: 0.4em;
+}
+
+.detail button.done.done:hover{
+  background-image: url("img/undue.svg");
 }

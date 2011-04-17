@@ -21,6 +21,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */    
     var onCollectionChanged = function( c ){
       model.entries = c;
+      model.notify();
     };
     
     /**
@@ -77,7 +78,37 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       model.subscribe( this );
       c = sb.getContainer() 
       tmpl = sb.getTemplate("detail");	
-      model.notify();
+      model.notify();      
+      c.delegate( "button.due",'click', done );
+      c.delegate( "button.done",'click', undo );
+      c.delegate( "button.delete",'click', remove );
+    };
+    
+    /**
+     * Function: remove
+     */
+    var remove = function(){
+      if( model.selected[0] ){
+	sb.publish("collection/delete", model.selected[0] );
+      }      
+    };
+    
+    /**
+     * Function: done
+     */
+    var done = function(){
+      if( model.selected[0] ){
+	sb.publish("collection/done", model.selected[0] );
+      }      
+    };
+    
+    /**
+     * Function: undo
+     */
+    var undo = function(){
+      if( model.selected[0] ){
+	sb.publish("collection/undo", model.selected[0] );
+      }      
     };
     
     /**
@@ -109,10 +140,11 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       var item = {};      
       
       if( model.selected.length === 1 ){
-	item = model.entries[ model.selected[0] ];
+	item = model.entries[ model.selected[0] ] || item;
       }
                   
       sb.tmpl( tmpl, {
+	label_delete: sb._("delete"),
 	title: sb._("Details"),
 	label_name: sb._("Name"),
 	name: item.title,
@@ -120,8 +152,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	contexts: item.contexts,
 	label_new: sb._("New"),
 	isNew: trueFalseToYesNo( item.new ),
-	label_done: sb._("Done"),
-	isDone: trueFalseToYesNo( item.done )
+	done: item.done
       }).appendTo( c );
     };
     

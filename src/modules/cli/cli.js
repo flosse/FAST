@@ -148,13 +148,15 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
 	  
       if( ev.which == '27' ){		// on escape
 	model.cmd = '';
+	model.notify();
       }else{
 	model.cmd = $(this).val();
 	if( ev.which == '13' ){		// on enter
 	  model.enterPressed = true;
+	  model.notify();
 	}
       }
-      model.notify();      
+      
     }
     
     /**

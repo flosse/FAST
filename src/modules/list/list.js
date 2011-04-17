@@ -172,8 +172,8 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       sb = s;
       model = m;
       c = sb.getContainer();
-      c.delegate( "a.due",'click', done );
-      c.delegate( "a.done",'click', undo );
+      c.delegate( "button.due",'click', done );
+      c.delegate( "button.done",'click', undo );
       c.delegate( "li",'click', select );
       ulTmpl = sb.getTemplate("list");      
       model.subscribe( this );     
