@@ -4,7 +4,7 @@
   <button class="delete">${label_delete}</button>
 </div>
 <ul>
-  <li><label>${label_name}</label>${name}</li>
-  <li><label>${label_contexts}</label>{{each contexts}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}</li>
+  <li><label>${label_name}</label><input type="text" value="${name}" class="name"/></li>
+  <li><label>${label_contexts}</label><input type="text" class="contexts" value="{{each contexts}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}" /></li>
   <li><label>${label_new}</label>${isNew}</li>
 </ul>

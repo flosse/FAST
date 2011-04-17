@@ -1,6 +1,6 @@
 <ul>
 {{each entries}} 
-  <li id="${id}" {{if (selected === id) }}class="selected"{{/if}}>
+  <li id="${id}" class="{{if (selected === id) }}selected {{/if}}{{if done }}done{{else}}due{{/if}}">
     <div>
       <button class="{{if done }}done{{else}}due{{/if}}"></button>
       <a href="#">${title}</a>

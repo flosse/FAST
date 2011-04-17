@@ -76,6 +76,15 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     };
     
     /**
+    * Function: updateEntry
+    */        
+    var updateEntry = function( e ){
+      collection.entries[ e.id ] = e;
+      saveData( collection.entries );
+      sb.publish("collection/changed", collection.entries );
+    };
+    
+    /**
     * Function: changeProperty
     */        
     var changeProperty = function( id, property, value ){      
@@ -143,6 +152,7 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       sb.subscribe("collection/undo", undo );
       sb.subscribe("collection/delete", remove );
       sb.subscribe("collection/refresh", update );
+      sb.subscribe("collection/update", updateEntry );
       
     };
     

@@ -21,7 +21,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */    
     var onCollectionChanged = function( c ){
       model.entries = c;
-      model.notify();
+     // model.notify();
     };
     
     /**
@@ -82,6 +82,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       c.delegate( "button.due",'click', done );
       c.delegate( "button.done",'click', undo );
       c.delegate( "button.delete",'click', remove );
+      c.delegate( "input.name",'keyup', onTitleChanged );
+      c.delegate( "input.contexts",'keyup', onCtxtChanged );
     };
     
     /**
@@ -90,6 +92,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     var remove = function(){
       if( model.selected[0] ){
 	sb.publish("collection/delete", model.selected[0] );
+	model.notify();
       }      
     };
     
@@ -130,6 +133,29 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       }
       return sb._("Context");
     };
+    
+    /**
+     * Function: onTitleChanged
+     */    
+    var onTitleChanged = function(){
+      var item = model.entries[ model.selected[0] ];
+      item.title = $(this).val();
+      sb.publish("collection/update", item );
+    };
+    
+    /**
+     * Function: onCtxtChanged
+     */    
+    var onCtxtChanged = function(){
+      var item = model.entries[ model.selected[0] ];     
+      var a = $(this).val().split(',');
+      for( var j in a ){
+	a[j] = a[j].trim();
+      }
+     item.contexts = a;
+     sb.info(a);
+     sb.publish("collection/update", item );
+    }
     
     /**
      * Function: update

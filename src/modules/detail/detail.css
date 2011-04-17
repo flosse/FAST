@@ -21,6 +21,21 @@
   padding: 0.4em;
 }
 
+
+.detail input{
+  background: transparent;
+  border: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.detail input:focus{
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none; 
+  text-decoration: underline;
+}
+
 .detail button{
   border: 1px solid #aaa;  
   border-radius: 0.3em;
