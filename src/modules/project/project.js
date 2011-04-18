@@ -105,7 +105,7 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
 	    if( !projects[ proj ] && proj !== ""){
 	      projects[ proj ] = { name: proj, count: 1 };
 	    }else if( projects[ proj ] && proj !== ""){
-	      projects[ cntxt ].count++;
+	      projects[ proj ].count++;
 	    }
 	  }
 	}

@@ -83,6 +83,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       c.delegate( "button.delete",'click', remove );
       c.delegate( "input.name",'keyup', onTitleChanged );
       c.delegate( "input.contexts",'keyup', onCtxtChanged );
+      c.delegate( "input.projects",'keyup', onProjChanged );
       c.delegate( "textarea.note",'keyup', onNoteChanged );
     };
     
@@ -153,6 +154,19 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	a[j] = a[j].trim();
       }
      item.contexts = a;
+     sb.publish("collection/update", item );
+    };
+    
+     /**
+     * Function: onProjChanged
+     */    
+    var onProjChanged = function(){
+      var item = model.entries[ model.selected[0] ];     
+      var a = $(this).val().split(',');
+      for( var j in a ){
+	a[j] = a[j].trim();
+      }
+     item.projects = a;
      sb.publish("collection/update", item );
     };
     
