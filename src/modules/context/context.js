@@ -26,6 +26,7 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     * Function: updateCtxt
     */  
     var updateCtxt = function( entries ){
+      model.entries = entries;
       model.contexts = {};
       model.contexts[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) }      
       model.contexts[ keywords.NULL ] = { name: sb._("WithoutContext"), count: countContextless( entries ) }
@@ -50,17 +51,57 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     };
     
     /**
+     * Function: filterByContext
+     */   
+    var filterByContext = function( items, ctxt ){
+      
+      var entries = { };    
+      
+      if( ctxt === keywords.ALL ){	  	  
+	// copy items
+	for( var i in items ){
+	  entries[ i ] = items[i].id;      
+	}
+	return entries;
+      }
+      if( ctxt === keywords.NULL ){
+	ctxt = null;
+      }
+  
+      for( var i in items ){
+	
+	var item = items[i];
+	
+	if( item ){
+	  
+	  if( !item.contexts ){
+	    item.contexts = [];
+	  }
+	  var contexts = item.contexts;
+
+	  if( !ctxt && contexts.length < 1 ){	  
+	    entries[ item.id ] = item.id;
+	  }
+	  else if( ctxt && contexts.length > 0 ){
+	    for( var j in contexts ){
+	      if( contexts[j].toLowerCase() === ctxt.toLowerCase() ){ 
+		entries[ item.id ] = item.id;      
+	      }
+	    }
+	  }
+	}
+      }
+      return entries;      
+    };
+    
+    /**
     * Function: update
     */       
-    var update = function(){
-      
-      if( model.current === keywords.ALL ){
-	sb.publish("context/changed", keywords.ALL );
-      }else if( model.current === keywords.NULL ){
-	sb.publish("context/changed", keywords.NULL );      
-      }else{
-	sb.publish("context/changed", model.current );
-      }
+    var update = function(){         
+      sb.publish("mask/changed", { 
+	id:"context", 
+	mask: filterByContext( model.entries, model.current )
+      });
     };
         
     /**
@@ -83,7 +124,7 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
 	sorted[ a[key] ] = o[ a[key] ];
       }
       return sorted;
-    }
+    };
     
     /**
     * Function: getContexts
@@ -145,6 +186,7 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
   * Class: context.model
   */            
   var model = {
+    entries: {},
     current: keywords.ALL,
     contexts: {}
   };

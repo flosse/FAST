@@ -30,6 +30,7 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
       model.projects[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) }      
       model.projects[ keywords.NULL ] = { name: sb._("WithoutProject"), count: countProjectless( entries ) }
       $.extend( model.projects, sortObject( getProjects( entries )) );
+      model.entries = entries;
       model.notify();
     };
     
@@ -52,15 +53,8 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
     /**
     * Function: update
     */       
-    var update = function(){
-      
-      if( model.current === keywords.ALL ){
-	sb.publish("project/changed", keywords.ALL );
-      }else if( model.current === keywords.NULL ){
-	sb.publish("project/changed", keywords.NULL );      
-      }else{
-	sb.publish("project/changed", model.current );
-      }
+    var update = function(){     
+      sb.publish("mask/changed", { id:"project", mask: filterByProject( model.entries, model.current ) } );
     };
         
     /**
@@ -113,6 +107,50 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
       return projects;
     };
     
+    /**
+     * Function: filterByProject
+     */
+    var filterByProject = function( items, proj ){
+	
+      var entries = {};    
+      
+      if( proj === keywords.ALL ){
+	// copy items	
+	for( var i in items ){
+	  entries[ i ] = items[i].id;      
+	}
+	return entries;
+      }
+      if( proj === keywords.NULL ){
+	proj = null;
+      }
+  
+      for( var i in items ){
+	
+	var item = items[i];
+	
+	if( item ){
+	  
+	  if( !item.projects ){
+	    item.projects = [];
+	  }
+	  var projects = item.projects;
+
+	  if( !proj && projects.length < 1 ){	  
+	    entries[ item.id ] = item.id;
+	  }
+	  else if( proj && projects.length > 0 ){
+	    for( var j in projects ){
+	      if( projects[j].toLowerCase() === proj.toLowerCase() ){ 
+		entries[ item.id ] = item.id;      
+	      }
+	    }
+	  }
+	}
+      }
+      return entries;      
+    };      
+  
     /**
     * Function: init
     */               

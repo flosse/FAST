@@ -28,8 +28,9 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
      * Function: updateBoxes
      */    
     var updateBoxes = function( entries ){
+      model.entries = entries;
       model.boxes = {};
-      model.boxes[ keywords.ALL ] = { name: sb._("All"), count: countEntries( entries ) };
+      model.boxes[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) };
       model.boxes[ keywords.NEW ] = { name: sb._("New"), count: countNew( entries ) };
       model.boxes[ keywords.DONE ] = { name: sb._("Done"), count: countDone( entries ) };
       model.notify();      
@@ -39,20 +40,41 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
      * Function: update
      */
     var update = function(){
-      sb.publish("box/changed", model.current );
+      sb.publish("mask/changed", { 
+	id: "box", 
+	mask: filterByBox( model.entries, model.current) 	
+      });
     };
-    
+               
     /**
-     * Function: countEntries
-     */           
-    var countEntries = function( items ){
-      var count = 0;
-      for( var i in items ){
-	count++;
+    * Function: filterByBox
+    */      
+    var filterByBox = function( items, box ){
+      var entries = { };
+      switch( box ){
+	case "ALL":
+	  for( var i in items ){
+	    entries[i] = items[i].id;
+	  }
+	  break;
+	case "DONE":
+	  for( var i in items ){
+	    if( items[i].done === true ){
+	      entries[i] = items[i].id;		
+	    }
+	  }
+	  break;
+	case "NEW":
+	  for( var i in items ){
+	    if( items[i].new === true ){
+	      entries[i] = items[i].id;
+	    }
+	  }
+	  break;
       }
-      return count;
+      return entries; 
     };
-    
+       
     /**
     * Function: countNew
     */  

@@ -7,13 +7,7 @@
  * This class contains the list module for fast.
  */
 fast.modules.list = fast.modules.list || (function( window, undefined ){
-  
-  // container for some keywords
-  var keywords = {
-    ALL: "ALL",
-    NULL: "NULL"
-  };
-  
+    
   /**
   * Class: list.controller 
   */
@@ -21,118 +15,6 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     
     var model;
     var view;
-
-    // container for several filter
-    var filter = {      
-      
-      byContext: function( items, ctxt ){
-	
-	var entries = { };    
-	
-	if( ctxt === keywords.ALL ){	  	  
-	  // copy items	
-	  for( var i in items ){
-	    entries[ i ] = items[i];      
-	  }
-	  return entries;
-	}
-	if( ctxt === keywords.NULL ){
-	  ctxt = null;
-	}
-    
-	for( var i in items ){
-	  
-	  var item = items[i];
-	  
-	  if( item ){
-	    
-	    if( !item.contexts ){
-	      item.contexts = [];
-	    }
-	    var contexts = item.contexts;
-
-	    if( !ctxt && contexts.length < 1 ){	  
-	      entries[ item.id ] = item;
-	    }
-	    else if( ctxt && contexts.length > 0 ){
-	      for( var j in contexts ){
-		if( contexts[j].toLowerCase() === ctxt.toLowerCase() ){ 
-		  entries[ item.id ] = item;      
-		}
-	      }
-	    }
-	  }
-	}
-	return entries;      
-      },
-      
-      byProject: function( items, proj ){
-	
-	var entries = { };    
-	
-	if( proj === keywords.ALL ){	  	  
-	  // copy items	
-	  for( var i in items ){
-	    entries[ i ] = items[i];      
-	  }
-	  return entries;
-	}
-	if( proj === keywords.NULL ){
-	  proj = null;
-	}
-    
-	for( var i in items ){
-	  
-	  var item = items[i];
-	  
-	  if( item ){
-	    
-	    if( !item.projects ){
-	      item.projects = [];
-	    }
-	    var projects = item.projects;
-
-	    if( !proj && projects.length < 1 ){	  
-	      entries[ item.id ] = item;
-	    }
-	    else if( proj && projects.length > 0 ){
-	      for( var j in projects ){
-		if( projects[j].toLowerCase() === proj.toLowerCase() ){ 
-		  entries[ item.id ] = item;      
-		}
-	      }
-	    }
-	  }
-	}
-	return entries;      
-      },      
-      
-      byBox: function( items, box ){
-	var entries = { };
-	switch( box ){
-	  case "ALL":
-	    for( var i in items ){
-	      entries[i] = items[i];
-	    }
-	    break;
-	  case "DONE":
-	    for( var i in items ){
-	      if( items[i].done === true ){
-		entries[i] = items[i];		
-	      }
-	    }
-	    break;
-	  case "NEW":
-	    for( var i in items ){
-	      if( items[i].new === true ){
-		entries[i] = items[i];		
-	      }
-	    }
-	    break;
-	}
-	return entries; 
-      }
-    };
     
     /**
     * Function: onCollectionChanged
@@ -143,42 +25,90 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     };
     
     /**
-    * Function: onContextChanged
+    * Function: onMaskChanged
     */
-    var onContextChanged = function( c ){
-      model.filter.context = c;
-      refilter();
-      model.notify();
+    var onMaskChanged = function( data ){
+      if( typeof data === "object" ){
+	if( data.id && data.mask ){      
+	  model.masks[ data.id ] = data.mask;
+	  refilter();
+	  model.notify();
+	}
+      }
+    };
+        
+    /**
+    * Function: equal
+    */
+    var equal = function( a, b ){
+      return ( a === b ) ? a : false;
     };
     
     /**
-    * Function: onProjectChanged
-    */
-    var onProjectChanged = function( p ){
-      model.filter.project = p;
-      refilter();
-      model.notify();
-    };
-    
-    
-    /**
-    * Function: onBoxChanged
+    * Function: or
     */    
-    var onBoxChanged = function( b ){
-      model.filter.box = b;
-      refilter();
-      model.notify();
+    var or = function( a, b ){
+      return ( a || b ) ? a || b : false;
     };
     
+    /**
+    * Function: maxObj
+    */
+    var maxObj = function( a,b ){
+      return ( sb.count(b) > sb.count(a) ) ? b : a;
+    };
+        
+    /**
+    * Function: combineMasks
+    * 
+    * Parameters:
+    * (Array) a 
+    * (Function) fn
+    */    
+    var combineMasks = function( a, fn ){
+
+      if( a.length === 1 ){	
+	
+	return a[0];
+	
+      }else if( a.length === 2 ){
+
+	var newMask = {};      
+	var c = maxObj( a[0], a[1] );
+	var d = false;
+	
+	for( var i in c ){
+	  d = fn( a[0][i], a[1][i] );
+	  if( d ){
+	    newMask[ i ] = d;
+	  }
+	}
+	return newMask;
+	
+      } // a.length > 3
+      return combineMasks( [ a[0], combineMasks( a.slice(1), fn ) ], fn );
+    };
+            
     /**
     * Function: refilter
     */
     var refilter = function(){
-      model.filtered = filter.byBox( model.collection, model.filter.box );
-      model.filtered = filter.byContext( model.filtered, model.filter.context );
-      model.filtered = filter.byProject( model.filtered, model.filter.project );
-    }
-    
+      
+      var masks = [];
+            
+      for( var i in model.masks ){
+ 	if( model.masks[i] ){
+ 	  masks.push( model.masks[i] );
+ 	}
+      }
+      
+      model.filtered = {};
+      for( var i in combineMasks( masks, equal ) ){
+	model.filtered[i] = model.collection[i];
+      }
+
+    };
+        
     /**
     * Function: init
     */    
@@ -186,12 +116,9 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       
       model = sb.getModel("model");
       view = new sb.getView("view")();
-      view.init( sb, model );
-      
+      view.init( sb, model );      
       sb.subscribe("collection/changed", onCollectionChanged );
-      sb.subscribe("context/changed", onContextChanged );
-      sb.subscribe("project/changed", onProjectChanged );
-      sb.subscribe("box/changed", onBoxChanged );
+      sb.subscribe("mask/changed", onMaskChanged );
     };
     
     /**
@@ -256,6 +183,9 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       sb.publish("collection/undo", id );
     }
     
+    /**
+    * Function: select
+    */    
     var select = function( ev ){
       id = $(this).attr("id");
       model.selected[0] = id;
@@ -282,14 +212,11 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
   * Class: list.model
   */
   var model = {
+    selected:[],
     collection: {},
-    filtered: {},    
-    filter: {
-      context: keywords.ALL,
-      project: keywords.ALL,
-      box: keywords.ALL
-    },
-    selected:[]
+    filtered: {},
+    masks: {},   
+    groups: []
   };
   
   // public API
