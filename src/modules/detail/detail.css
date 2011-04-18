@@ -1,5 +1,6 @@
 .detail{
-
+  padding-bottom: 0.1em;
+  color: #666;
 }
 
 .detail li{
@@ -11,8 +12,9 @@
   background: transparent;  
 }
 .detail label{
-  font-weight: bold;
+/*   font-weight: bold; */
   margin-right: 0.5em;
+  font-size: 0.8em;
 }
 
 .detail .toolbar{
@@ -21,19 +23,47 @@
   padding: 0.4em;
 }
 
+.detail textarea{
+  border: 1px solid #ccc;
+  background: #eee;
+  outline: none;
+  display: blocK;
+  margin: 0.5em;
+  resize: none;
+}
+
+.detail textarea:focus{
+  border-color: #aaa;
+}
+
+.detail h3{
+  padding: 0.4em;
+}
+
+.detail h3 input{
+  color: white;
+  font-weight: bold;
+  text-align:center;
+  background: transparent;
+  border: none;
+}
 
 .detail input{
   background: transparent;
   border: none;
   margin-top: 0;
   margin-bottom: 0;
-  padding: 0;
+  padding: 0;   
+  border: 1px solid #ccc;
+  background: #eee;
+  border-radius: 0;
 }
 
 .detail input:focus{
   -webkit-box-shadow: none;
   -moz-box-shadow: none; 
   text-decoration: underline;
+  border-color: #aaa;
 }
 
 .detail button{
@@ -45,12 +75,27 @@
   background: -moz-linear-gradient(top, #eee, #ddd);
 }
 
+.detail button:disabled:hover,
+.detail button:disabled:active,
+.detail button:disabled{
+  color: #999;
+  cursor: default;
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+}
+
 .detail button:hover{
   color: #222;
 }
+
 .detail button:active{
   background: -webkit-gradient( linear, left top, left bottom, from(#ccc), to(#ddd));
   background: -moz-linear-gradient(top, #eee, #ddd);
+}
+
+.detail button.due:disabled,
+.detail button.due:disabled:hover{
+  background-image: url("img/due.svg");  
 }
 
 .detail button.due{

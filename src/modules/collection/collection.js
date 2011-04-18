@@ -188,7 +188,8 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       title: title,
       contexts: [],
       new: true,
-      done: false
+      done: false,
+      note: ""
     });    
     
   };  

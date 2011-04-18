@@ -84,6 +84,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       c.delegate( "button.delete",'click', remove );
       c.delegate( "input.name",'keyup', onTitleChanged );
       c.delegate( "input.contexts",'keyup', onCtxtChanged );
+      c.delegate( "textarea.note",'keyup', onNoteChanged );
     };
     
     /**
@@ -153,9 +154,18 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	a[j] = a[j].trim();
       }
      item.contexts = a;
-     sb.info(a);
      sb.publish("collection/update", item );
-    }
+    };
+    
+    /**
+     * Function: onNoteChanged
+     */    
+    var onNoteChanged = function(){
+      var item = model.entries[ model.selected[0] ];     
+      var note = $(this).val();      
+      item.note = note;
+      sb.publish("collection/update", item );
+    };    
     
     /**
      * Function: update
@@ -174,14 +184,17 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	title: sb._("Details"),
 	label_name: sb._("Name"),
 	name: item.title,
+	label_note: sb._("Note"),
 	label_contexts: getCtxtString( item.contexts ),
 	contexts: item.contexts,
 	label_new: sb._("New"),
 	isNew: trueFalseToYesNo( item.new ),
-	done: item.done
+	done: item.done,
+	note: item.note
       }).appendTo( c );
+      c.find("textarea.note").autoGrow();
     };
-    
+        
     // public API
     return({
       init: init,
