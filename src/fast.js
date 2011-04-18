@@ -42,6 +42,13 @@ var fast = fast || (function( window, undefined ){
       views: { view: fast.modules.context.view },
       templates: { list: "modules/context/context.html" },      
       i18n: fast.modules.context.i18n
+    });
+    
+    scaleApp.register("project", fast.modules.project.controller,{
+      models: { model: fast.modules.project.model },
+      views: { view: fast.modules.project.view },
+      templates: { list: "modules/project/project.html" },      
+      i18n: fast.modules.project.i18n
     }); 
     
     scaleApp.register("detail", fast.modules.detail.controller,{
@@ -51,7 +58,10 @@ var fast = fast || (function( window, undefined ){
       i18n: fast.modules.detail.i18n
     }); 
     
-    scaleApp.startAll();  
+    scaleApp.startAll( function(){ 
+      scaleApp.publish("collection/refresh");      
+    });
+    
     
   };
   

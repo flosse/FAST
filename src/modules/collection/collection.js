@@ -42,8 +42,14 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     */        
     var create = function( ev ){      
       var e = new entry( getUniqueId( ev.title ), ev.title );      
-      if( typeof ev.contexts ){ 
+      if( ev.contexts ){ 
 	e.contexts = ev.contexts;
+      }
+      if( ev.projects ){ 
+	e.projects = ev.projects;
+      }
+      if( ev.note ){ 
+	e.note = ev.note;
       }
       collection.entries[ e.id ] = e;      
       saveData( collection.entries );
@@ -187,6 +193,7 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       id: id,
       title: title,
       contexts: [],
+      projects: [],
       new: true,
       done: false,
       note: ""

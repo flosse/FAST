@@ -4,9 +4,9 @@
 
 /**
  * Class: list
- * This class contains the context module for fast.
+ * This class contains the project module for fast.
  */
-fast.modules.context = fast.modules.context || (function( window, undefined ){
+fast.modules.project = fast.modules.project || (function( window, undefined ){
   
   // container for keywords  
   var keywords = {
@@ -15,7 +15,7 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
   };
   
   /**
-   * Class: context.controller
+   * Class: project.controller
    */  
   var controller = function( sb ){
     
@@ -23,26 +23,26 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     var view;
        
     /**
-    * Function: updateCtxt
+    * Function: updateProject
     */  
-    var updateCtxt = function( entries ){
-      model.contexts = {};
-      model.contexts[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) }      
-      model.contexts[ keywords.NULL ] = { name: sb._("WithoutContext"), count: countContextless( entries ) }
-      $.extend( model.contexts, sortObject( getContexts( entries )) );
+    var updateProject = function( entries ){
+      model.projects = {};
+      model.projects[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) }      
+      model.projects[ keywords.NULL ] = { name: sb._("WithoutProject"), count: countProjectless( entries ) }
+      $.extend( model.projects, sortObject( getProjects( entries )) );
       model.notify();
     };
     
     /**
-    * Function: countContextless
+    * Function: countProjectless
     */  
-    var countContextless = function( entries ){
+    var countProjectless = function( entries ){
       var count = 0;
       for( var i in entries ){	
-	if( !entries[i].contexts ){
+	if( !entries[i].projects ){
 	  count++;
 	}
-	else if( entries[i].contexts.length < 1 ){
+	else if( entries[i].projects.length < 1 ){
 	  count++;
 	}
       }
@@ -55,11 +55,11 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     var update = function(){
       
       if( model.current === keywords.ALL ){
-	sb.publish("context/changed", keywords.ALL );
+	sb.publish("project/changed", keywords.ALL );
       }else if( model.current === keywords.NULL ){
-	sb.publish("context/changed", keywords.NULL );      
+	sb.publish("project/changed", keywords.NULL );      
       }else{
-	sb.publish("context/changed", model.current );
+	sb.publish("project/changed", model.current );
       }
     };
         
@@ -86,31 +86,31 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     }
     
     /**
-    * Function: getContexts
+    * Function: getProjects
     */           
-    var getContexts = function( items ){
+    var getProjects = function( items ){
       
-      var contexts = {};
-      var contextArray = [];
+      var projects = {};
+      var projectArray = [];
       
       for( var i in items ){
 	var item = items[i];
 	
-	if( item.contexts ){
+	if( item.projects ){
 	
-	  for( var j in item.contexts ){
+	  for( var j in item.projects ){
 	    
-	    var cntxt = item.contexts[j].trim();
+	    var proj = item.projects[j].trim();
 	    
-	    if( !contexts[ cntxt ] && cntxt !== ""){
-	      contexts[ cntxt ] = { name: cntxt, count: 1 };
-	    }else if( contexts[ cntxt ] && cntxt !== ""){
-	      contexts[ cntxt ].count++;
+	    if( !projects[ proj ] && proj !== ""){
+	      projects[ proj ] = { name: proj, count: 1 };
+	    }else if( projects[ proj ] && proj !== ""){
+	      projects[ cntxt ].count++;
 	    }
 	  }
 	}
       }                      
-      return contexts;
+      return projects;
     };
     
     /**
@@ -122,7 +122,7 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
       model.subscribe( this );
       view = new sb.getView("view")();
       view.init( sb, model );
-      sb.subscribe("collection/changed", updateCtxt );      
+      sb.subscribe("collection/changed", updateProject );
       
     };
     
@@ -142,15 +142,15 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
   };
   
   /**
-  * Class: context.model
+  * Class: project.model
   */            
   var model = {
     current: keywords.ALL,
-    contexts: {}
+    projects: {}
   };
   
   /**
-  * Class: context.view
+  * Class: projcet.view
   */            
   var view = function(){
     
@@ -171,15 +171,15 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
 	sb = s;
 	c = sb.getContainer() 
 	tmpl = sb.getTemplate("list");	
-	c.delegate("li", "click", setContext );
+	c.delegate("li", "click", setProject );
 	model.notify();
     };    
       
     /**
-    * Function: setContext
+    * Function: setProject
     */
-    var setContext = function( ev ){
-      model.current = $(this).data("context");
+    var setProject = function( ev ){
+      model.current = $(this).data("project");
       model.notify();
     };
     
@@ -188,7 +188,7 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     */
     var update = function(){
       c.empty();      
-      sb.tmpl( tmpl, { title: sb._("Context"), contexts: model.contexts, current: model.current } ).appendTo( c );
+      sb.tmpl( tmpl, { title: sb._("Project"), projects: model.projects, current: model.current } ).appendTo( c );
     };
     
     //public API

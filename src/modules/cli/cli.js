@@ -16,7 +16,9 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
     // container for all keywords
     var keywords = {
       meta: '#',
-      context: 'c',      
+      context: 'c',
+      project: 'p',
+      note: 'n',
       fav: 'f',    
     };
         
@@ -54,7 +56,12 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
 	    case keywords.context:
 	      e.contexts = termArray;
 	      break;
-	      
+	    case keywords.project:
+	      e.projects = termArray;
+	      break;
+	    case keywords.note:
+	      e.note = term;
+	      break;
 	    case keywords.fav:
 	      e.fav = true;
 	      break;

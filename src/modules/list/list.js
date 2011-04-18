@@ -65,6 +65,48 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
 	}
 	return entries;      
       },
+      
+      byProject: function( items, proj ){
+	
+	var entries = { };    
+	
+	if( proj === keywords.ALL ){	  	  
+	  // copy items	
+	  for( var i in items ){
+	    entries[ i ] = items[i];      
+	  }
+	  return entries;
+	}
+	if( proj === keywords.NULL ){
+	  proj = null;
+	}
+    
+	for( var i in items ){
+	  
+	  var item = items[i];
+	  
+	  if( item ){
+	    
+	    if( !item.projects ){
+	      item.projects = [];
+	    }
+	    var projects = item.projects;
+
+	    if( !proj && projects.length < 1 ){	  
+	      entries[ item.id ] = item;
+	    }
+	    else if( proj && projects.length > 0 ){
+	      for( var j in projects ){
+		if( projects[j].toLowerCase() === proj.toLowerCase() ){ 
+		  entries[ item.id ] = item;      
+		}
+	      }
+	    }
+	  }
+	}
+	return entries;      
+      },      
+      
       byBox: function( items, box ){
 	var entries = { };
 	switch( box ){
@@ -110,6 +152,16 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     };
     
     /**
+    * Function: onProjectChanged
+    */
+    var onProjectChanged = function( p ){
+      model.filter.project = p;
+      refilter();
+      model.notify();
+    };
+    
+    
+    /**
     * Function: onBoxChanged
     */    
     var onBoxChanged = function( b ){
@@ -124,6 +176,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     var refilter = function(){
       model.filtered = filter.byBox( model.collection, model.filter.box );
       model.filtered = filter.byContext( model.filtered, model.filter.context );
+      model.filtered = filter.byProject( model.filtered, model.filter.project );
     }
     
     /**
@@ -137,8 +190,8 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       
       sb.subscribe("collection/changed", onCollectionChanged );
       sb.subscribe("context/changed", onContextChanged );
+      sb.subscribe("project/changed", onProjectChanged );
       sb.subscribe("box/changed", onBoxChanged );
-      sb.publish("collection/refresh");
     };
     
     /**
@@ -233,6 +286,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     filtered: {},    
     filter: {
       context: keywords.ALL,
+      project: keywords.ALL,
       box: keywords.ALL
     },
     selected:[]

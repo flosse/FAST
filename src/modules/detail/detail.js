@@ -41,8 +41,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	view = new sb.getView("view")();
 	view.init( sb, model );
 	sb.subscribe("collection/changed", onCollectionChanged );
-	sb.subscribe("collection/select", onSelection );
-	sb.publish("collection/refresh");
+	sb.subscribe("collection/select", onSelection );	
     };
     
     /**
@@ -187,6 +186,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	label_note: sb._("Note"),
 	label_contexts: getCtxtString( item.contexts ),
 	contexts: item.contexts,
+	label_projects: sb._("Projects"),
+	projects: item.projects,
 	label_new: sb._("New"),
 	isNew: trueFalseToYesNo( item.new ),
 	done: item.done,
