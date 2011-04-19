@@ -1,10 +1,13 @@
-<ul>
-{{each entries}} 
-  <li id="${id}" class="{{if (selected === id) }}selected {{/if}}{{if done }}done{{else}}due{{/if}}">
-    <div>
-      <button class="{{if done }}done{{else}}due{{/if}}"></button>
-      <a href="#">${title}</a>
-    </div>
-  </li>
-{{/each}}
-</ul>
+<div class="group">
+  <h3>${title}</h3>
+  <ul>
+  {{each entries}} 
+    <li id="${id}" class="{{if (selected === id) }}selected {{/if}}{{if done }}done{{else}}due{{/if}}">
+      <div>
+	<button class="{{if done }}done{{else}}due{{/if}}"></button>
+	<a href="#">${title}</a>
+      </div>
+    </li>
+  {{/each}}
+  </ul>
+</div>

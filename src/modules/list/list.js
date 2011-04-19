@@ -36,6 +36,15 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
 	}
       }
     };
+    
+    /**
+    * Function: onMaskChanged
+    */
+    var onGroupChanged = function( data ){      
+      model.groupedMask = data;      
+      refilter();
+      model.notify();      
+    };
         
     /**
     * Function: equal
@@ -103,10 +112,15 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       }
       
       model.filtered = {};
-      for( var i in combineMasks( masks, equal ) ){
+      var combinedMask = combineMasks( masks, equal );
+      for( var i in model.combinedMask ){
 	model.filtered[i] = model.collection[i];
       }
 
+      model.grouped = {};      
+      for( var i in model.groupedMask ){
+	model.grouped[ i ] = combineMasks([ model.groupedMask[i], combinedMask ], equal );
+      };
     };
         
     /**
@@ -119,6 +133,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       view.init( sb, model );      
       sb.subscribe("collection/changed", onCollectionChanged );
       sb.subscribe("mask/changed", onMaskChanged );
+      sb.subscribe("group/changed", onGroupChanged );
     };
     
     /**
@@ -198,7 +213,16 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var update = function(){
       c.empty();
-      sb.tmpl( ulTmpl, { entries: model.filtered, selected: model.selected[0]  } ).appendTo( c );
+            
+      for( var i in model.grouped ){	
+	var entries = {};
+	for( var j in model.grouped[i] ){
+	  entries[j] = model.collection[j];
+	}     
+	if( sb.count(entries) > 0){
+	  sb.tmpl( ulTmpl, { title: i ,entries: entries, selected: model.selected[0]  } ).appendTo( c );	  
+	}
+      };      
     };
         
     // public API
@@ -215,8 +239,9 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     selected:[],
     collection: {},
     filtered: {},
-    masks: {},   
-    groups: []
+    masks: {},
+    combinedMask: {},
+    groupedMask: {}
   };
   
   // public API
