@@ -25,7 +25,8 @@ var fast = fast || (function( window, undefined ){
   };
 
   var init = function(){
-    
+
+    $("#activatejs").remove();
     scaleApp.register("collection", fast.modules.collection.controller,{
       models: { 
 	collection: fast.modules.collection.collection,
