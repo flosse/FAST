@@ -97,8 +97,8 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     /**
     * Function: update
     */       
-    var update = function(){         
-      sb.publish("mask/changed", { 
+    var update = function(){
+      sb.publish( fast.events.MASK, { 
 	id:"context", 
 	mask: filterByContext( model.entries, model.current )
       });
@@ -163,8 +163,8 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
       model.subscribe( this );
       view = new sb.getView("view")();
       view.init( sb, model );
-      sb.subscribe("collection/changed", updateCtxt );      
-      
+      sb.subscribe( fast.events.CHANGED, updateCtxt );      
+
     };
     
     /**

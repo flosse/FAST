@@ -40,7 +40,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
      * Function: update
      */
     var update = function(){
-      sb.publish("mask/changed", { 
+      sb.publish( fast.events.MASK, { 
 	id: "box", 
 	mask: filterByBox( model.entries, model.current) 	
       });
@@ -112,7 +112,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
 	model.subscribe( this );
 	view = new sb.getView("view")();
 	view.init( sb, model );
-	sb.subscribe("collection/changed", updateBoxes );
+	sb.subscribe( fast.events.CHANGED, updateBoxes );
     };
     
     /**

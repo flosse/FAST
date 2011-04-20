@@ -8,32 +8,14 @@
  */
 fast.modules.list = fast.modules.list || (function( window, undefined ){
 
-  // container for all events
-  var events = {
-    publish : {
-      delete: "collection/delete",
-      done: "collection/done",
-      undo: "collection/undo",
-      disable_fav: "collection/fav/disable",
-      enable_fav: "collection/fav/enable",
-      select: "collection/select",
-    },
-    subscribe : {
-      collection: "collection/changed",
-      mask: "mask/changed",
-      group: "group/changed",
-      search: "cli/search"
-    }
-  };
-
   /**
   * Class: list.controller 
   */
   var controller = function( sb ){
-    
+
     var model;
     var view;
-    
+
     /**
     * Function: onCollectionChanged
     */
@@ -41,13 +23,13 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       model.collection = c;
       model.notify();
     };
-    
+
     /**
     * Function: onMaskChanged
     */
     var onMaskChanged = function( data ){
       if( typeof data === "object" ){
-	if( data.id && data.mask ){      
+	if( data.id && data.mask ){
 	  model.masks[ data.id ] = data.mask;
 	  refilter();
 	  model.notify();
@@ -171,10 +153,10 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       model = sb.getModel("model");
       view = new sb.getView("view")();
       view.init( sb, model );
-      sb.subscribe( events.subscribe.collection, onCollectionChanged );
-      sb.subscribe( events.subscribe.mask, onMaskChanged );
-      sb.subscribe( events.subscribe.group, onGroupChanged );
-      sb.subscribe( events.subscribe.search, onSearch );
+      sb.subscribe( fast.events.CHANGED, onCollectionChanged );
+      sb.subscribe( fast.events.MASK, onMaskChanged );
+      sb.subscribe( fast.events.GROUP, onGroupChanged );
+      sb.subscribe( fast.events.SEARCH, onSearch );
     };
     
     /**
@@ -222,7 +204,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var remove = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish( events.publish.delete, id );
+      sb.publish( fast.events.DELETE, id );
     };
     
     /**
@@ -230,7 +212,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var done = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish( events.publish.done, id );
+      sb.publish( fast.events.DONE, id );
     };
 
     /**
@@ -238,7 +220,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var undo = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish( events.publish.undo, id );
+      sb.publish( fast.events.UNDO, id );
     };
 
     /**
@@ -246,7 +228,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var favDisable = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish( events.publish.disable_fav, id );
+      sb.publish( fast.events.UNFAVORED, id );
     };
 
     /**
@@ -254,7 +236,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var favEnable = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish( events.publish.enable_fav, id );
+      sb.publish( fast.events.FAVORED, id );
     };
 
     /**
@@ -264,7 +246,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       id = $(this).attr("id");
       model.selected[0] = id;
       model.notify();
-      sb.publish( events.publish.select, id );
+      sb.publish( fast.events.SELECT, id );
     };
 
     /**

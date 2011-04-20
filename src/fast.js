@@ -3,10 +3,27 @@
 */
 
 var fast = fast || (function( window, undefined ){
-  
+
   // container for the modules
   var modules = { };
-    
+
+  // container for all events
+  var events = {
+    SEARCH: "cli/search",
+    CREATE: "collection/create",
+    DONE: "collection/done",
+    UNDO: "collection/undo",
+    DELETE: "collection/delete",
+    REFRESH: "collection/refresh",
+    UPDATE: "collection/update",
+    FAVORED: "collection/favored",
+    UNFAVORED: "collection/unfavored",
+    MASK: "mask/changed",
+    SELECT: "select",
+    GROUP: "group/changed",
+    CHANGED: "collection/changed"
+  };
+
   var init = function(){
     
     scaleApp.register("collection", fast.modules.collection.controller,{
@@ -66,15 +83,16 @@ var fast = fast || (function( window, undefined ){
     }); 
     
     scaleApp.startAll( function(){ 
-      scaleApp.publish("collection/refresh");      
+      scaleApp.publish( fast.events.REFRESH );
     });
     
     
   };
   
   return ({ 
-    init: init, 
-    modules: modules     
+    init: init,
+    modules: modules,
+    events: events
   });
   
 })( window );

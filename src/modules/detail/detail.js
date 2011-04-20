@@ -40,8 +40,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	model.subscribe( this );
 	view = new sb.getView("view")();
 	view.init( sb, model );
-	sb.subscribe("collection/changed", onCollectionChanged );
-	sb.subscribe("collection/select", onSelection );	
+	sb.subscribe( fast.events.CHANGED, onCollectionChanged );
+	sb.subscribe( fast.events.SELECT, onSelection );	
     };
     
     /**
@@ -94,7 +94,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var remove = function(){
       if( model.selected[0] ){
-	sb.publish("collection/delete", model.selected[0] );
+	sb.publish( fast.events.DELETE, model.selected[0] );
 	model.notify();
       }      
     };
@@ -104,7 +104,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var done = function(){
       if( model.selected[0] ){
-	sb.publish("collection/done", model.selected[0] );
+	sb.publish( fast.events.DONE, model.selected[0] );
 	model.notify();
       }      
     };
@@ -114,7 +114,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var undo = function(){
       if( model.selected[0] ){
-	sb.publish("collection/undo", model.selected[0] );
+	sb.publish( fast.events.UNDO, model.selected[0] );
 	model.notify();
       }
     };
@@ -124,7 +124,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var disableFav = function(){
       if( model.selected[0] ){
-	sb.publish( "collection/fav/disable", model.selected[0] );
+	sb.publish( fast.events.UNFAVORED, model.selected[0] );
 	model.notify();
       }
     };
@@ -134,7 +134,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var enableFav = function(){
       if( model.selected[0] ){
-	sb.publish( "collection/fav/enable", model.selected[0] );
+	sb.publish( fast.events.FAVORED, model.selected[0] );
 	model.notify();
       }
     };
@@ -165,7 +165,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     var onTitleChanged = function(){
       var item = model.entries[ model.selected[0] ];
       item.title = $(this).val();
-      sb.publish("collection/update", item );
+      sb.publish( fast.events.CHANGE, item );
     };
     
     /**
@@ -178,7 +178,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	a[j] = a[j].trim();
       }
      item.contexts = a;
-     sb.publish("collection/update", item );
+     sb.publish( fast.events.UPDATE, item );
     };
     
      /**
@@ -191,7 +191,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	a[j] = a[j].trim();
       }
      item.projects = a;
-     sb.publish("collection/update", item );
+     sb.publish( fast.events.UPDATE, item );
     };
     
     /**
@@ -201,7 +201,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       var item = model.entries[ model.selected[0] ];     
       var note = $(this).val();      
       item.note = note;
-      sb.publish("collection/update", item );
+      sb.publish( fast.events.UPDATE, item );
     };    
     
     /**

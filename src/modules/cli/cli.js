@@ -17,15 +17,6 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
     favorite: 'f',
     search: '/'
   };
-  
-  // container for all events
-  var events = {
-    publish : {
-      serach: "cli/search",
-      create: "collection/create"
-    },
-    subscribe : { }
-  };
 
   /**
    * Class: cli.controller
@@ -97,7 +88,7 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
       if( model.enterPressed === true ){
 	if( model.cmd.trim() !== ''){
 	  var e = parse( model.cmd.trim() );
-	  sb.publish( events.publish.create , e );
+	  sb.publish( fast.events.CREATE , e );
 	  resetModel();
 	}
       }else{
@@ -166,10 +157,10 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
       model.cmd = $(this).val();
 
       if( model.cmd[0] === keywords.search && model.cmd.length > 1 ){
-	      sb.publish( events.publish.serach, model.cmd.substr(1) );
+	      sb.publish( fast.events.SEARCH, model.cmd.substr(1) );
       }else{
 	
-	sb.publish( events.publish.serach, '' );
+	sb.publish( fast.events.SEARCH, '' );
 	
 	switch( ev.which ){
 

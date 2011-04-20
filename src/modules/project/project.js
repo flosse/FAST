@@ -54,7 +54,7 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
     * Function: update
     */       
     var update = function(){     
-      sb.publish("mask/changed", { id:"project", mask: filterByProject( model.entries, model.current ) } );
+      sb.publish( fast.events.MASK, { id:"project", mask: filterByProject( model.entries, model.current ) } );
     };
         
     /**
@@ -160,7 +160,7 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
       model.subscribe( this );
       view = new sb.getView("view")();
       view.init( sb, model );
-      sb.subscribe("collection/changed", updateProject );
+      sb.subscribe( fast.events.CHANGED, updateProject );
       
     };
     

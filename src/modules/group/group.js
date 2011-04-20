@@ -216,7 +216,7 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
      */
     var update = function(){
       regroup();
-      sb.publish("group/changed", model.grouped );
+      sb.publish( fast.events.GROUP, model.grouped );
     };
     
     /**
@@ -261,7 +261,7 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 	model.subscribe( this );
 	view = new sb.getView("view")();
 	view.init( sb, model );
-	sb.subscribe("collection/changed", updateGroups );
+	sb.subscribe( fast.events.CHANGED, updateGroups );
     };
     
     /**

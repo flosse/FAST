@@ -93,7 +93,7 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     var updateEntry = function( e ){
       collection.entries[ e.id ] = e;
       saveData( collection.entries );
-      sb.publish("collection/changed", collection.entries );
+      sb.publish( fast.events.CHANGED, collection.entries );
     };
     
     /**
@@ -108,8 +108,8 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     /**
     * Function: update
     */            
-    var update = function(){      
-      sb.publish("collection/changed", collection.entries );
+    var update = function(){
+      sb.publish( fast.events.CHANGED, collection.entries );
     };
     
     /**
@@ -159,14 +159,14 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       collection.entries = restoreData();
       
       entry = sb.getModel("entry");      
-      sb.subscribe("collection/create", create );
-      sb.subscribe("collection/done", done );
-      sb.subscribe("collection/undo", undo );
-      sb.subscribe("collection/delete", remove );
-      sb.subscribe("collection/refresh", update );
-      sb.subscribe("collection/update", updateEntry );
-      sb.subscribe("collection/fav/enable", enableFav );
-      sb.subscribe("collection/fav/disable", disableFav );
+      sb.subscribe( fast.events.CREATE, create );
+      sb.subscribe( fast.events.DONE, done );
+      sb.subscribe( fast.events.UNDO, undo );
+      sb.subscribe( fast.events.DELETE, remove );
+      sb.subscribe( fast.events.REFRESH, update );
+      sb.subscribe( fast.events.UPDATE, updateEntry );
+      sb.subscribe( fast.events.FAVORED, enableFav );
+      sb.subscribe( fast.events.UNFAVORED, disableFav );
       
     };
     
