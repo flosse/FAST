@@ -72,11 +72,17 @@
 }
 
 .list li button.done.done:hover{
-  background-image: url("img/undue.svg");
+/*   background-image: url("img/undue.svg"); */
 }
 
-.list li.done,
-li .done,
-li.done a{
+.list li.done a{
   text-decoration: line-through;
+}
+
+.list li button.favorite{
+  background-image: url("img/fav.svg");
+}
+.list li button.favorite.active,
+.list li button.favorite:hover{
+  background-image: url("img/fav_hover.svg");
 }

@@ -80,6 +80,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       model.notify();      
       c.delegate( "button.due",'click', done );
       c.delegate( "button.done",'click', undo );
+      c.delegate( "button.favorite.active",'click', disableFav );
+      c.delegate( "button.favorite.inactive",'click', enableFav );
       c.delegate( "button.delete",'click', remove );
       c.delegate( "input.name",'keyup', onTitleChanged );
       c.delegate( "input.contexts",'keyup', onCtxtChanged );
@@ -103,6 +105,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     var done = function(){
       if( model.selected[0] ){
 	sb.publish("collection/done", model.selected[0] );
+	model.notify();
       }      
     };
     
@@ -112,7 +115,28 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     var undo = function(){
       if( model.selected[0] ){
 	sb.publish("collection/undo", model.selected[0] );
-      }      
+	model.notify();
+      }
+    };
+    
+    /**
+    * Function: disableFav
+    */
+    var disableFav = function(){
+      if( model.selected[0] ){
+	sb.publish( "collection/fav/disable", model.selected[0] );
+	model.notify();
+      }
+    };
+
+    /**
+    * Function: favEnable
+    */
+    var enableFav = function(){
+      if( model.selected[0] ){
+	sb.publish( "collection/fav/enable", model.selected[0] );
+	model.notify();
+      }
     };
     
     /**
@@ -205,7 +229,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 	label_new: sb._("New"),
 	isNew: trueFalseToYesNo( item.new ),
 	done: item.done,
-	note: item.note
+	note: item.note,
+	favorite: item.favorite
       }).appendTo( c );
       c.find("textarea.note").autoGrow();
     };

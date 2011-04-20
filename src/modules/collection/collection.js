@@ -40,22 +40,20 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     /**
     * Function: create
     */        
-    var create = function( ev ){      
-      var e = new entry( getUniqueId( ev.title ), ev.title );      
-      if( ev.contexts ){ 
-	e.contexts = ev.contexts;
-      }
-      if( ev.projects ){ 
-	e.projects = ev.projects;
-      }
-      if( ev.note ){ 
-	e.note = ev.note;
-      }
-      collection.entries[ e.id ] = e;      
+    var create = function( ev ){
+
+      var e = new entry( getUniqueId( ev.title ), ev.title );
+
+      if( ev.contexts	){ e.contexts	= ev.contexts;	}
+      if( ev.projects	){ e.projects	= ev.projects;	}
+      if( ev.note	){ e.note	= ev.note;	}
+      if( ev.favorite	){ e.favorite	= ev.favorite;	}
+
+      collection.entries[ e.id ] = e;
       saveData( collection.entries );
       collection.notify();
     };
-    
+
     /**
     * Function: remove
     */        
@@ -79,6 +77,14 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     var undo = function( id ){
       changeProperty( id, 'done', false );      
       changeProperty( id, 'new', true );
+    };
+    
+    var enableFav = function( id ){
+      changeProperty( id, 'favorite', true );
+    };
+    
+    var disableFav = function( id ){
+      changeProperty( id, 'favorite', false );
     };
     
     /**
@@ -146,9 +152,9 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     /**
     * Function: init
     */        
-    var init = function(){      
+    var init = function(){
                   
-      collection = sb.getModel("collection");      
+      collection = sb.getModel("collection");
       collection.subscribe( this );
       collection.entries = restoreData();
       
@@ -159,6 +165,8 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       sb.subscribe("collection/delete", remove );
       sb.subscribe("collection/refresh", update );
       sb.subscribe("collection/update", updateEntry );
+      sb.subscribe("collection/fav/enable", enableFav );
+      sb.subscribe("collection/fav/disable", disableFav );
       
     };
     
@@ -196,7 +204,8 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       projects: [],
       new: true,
       done: false,
-      note: ""
+      note: "",
+      favorite: false
     });    
     
   };  

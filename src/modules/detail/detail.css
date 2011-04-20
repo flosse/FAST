@@ -124,3 +124,18 @@
 .detail button.done.done:hover{
   background-image: url("img/undue.svg");
 }
+
+.detail button.favorite:disabled,
+.detail button.favorite:disabled:hover,
+.detail button.favorite{
+  width: 1.4em;
+  height: 1.4em;
+  background: transparent;
+  border: none;
+  margin-right: 0.4em;
+  background-image: url("img/fav.svg");
+}
+.detail button.favorite.active,
+.detail button.favorite:hover{
+  background-image: url("img/fav_hover.svg");
+}

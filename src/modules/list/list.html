@@ -5,6 +5,7 @@
     <li id="${id}" class="{{if (selected === id) }}selected {{/if}}{{if done }}done{{else}}due{{/if}}">
       <div>
 	<button class="{{if done }}done{{else}}due{{/if}}"></button>
+	<button class="favorite {{if favorite }}active{{else}}inactive{{/if}}"></button>
 	<a href="#">${title}</a>
       </div>
     </li>

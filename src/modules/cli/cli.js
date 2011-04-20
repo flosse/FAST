@@ -14,7 +14,7 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
     context: 'c',
     project: 'p',
     note: 'n',
-    fav: 'f',
+    favorite: 'f',
     search: '/'
   };
   
@@ -72,8 +72,8 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
 	    case keywords.note:
 	      e.note = term;
 	      break;
-	    case keywords.fav:
-	      e.fav = true;
+	    case keywords.favorite:
+	      e.favorite = true;
 	      break;
 	  }
       }

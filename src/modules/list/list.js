@@ -14,6 +14,8 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       delete: "collection/delete",
       done: "collection/done",
       undo: "collection/undo",
+      disable_fav: "collection/fav/disable",
+      enable_fav: "collection/fav/enable",
       select: "collection/select",
     },
     subscribe : {
@@ -208,6 +210,8 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       c = sb.getContainer();
       c.delegate( "button.due",'click', done );
       c.delegate( "button.done",'click', undo );
+      c.delegate( "button.favorite.inactive",'click', favEnable );
+      c.delegate( "button.favorite.active",'click', favDisable );
       c.delegate( "li",'click', select );
       ulTmpl = sb.getTemplate("list");      
       model.subscribe( this );     
@@ -219,7 +223,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     var remove = function( ev ){
       id = $(this).parent().parent().attr("id");
       sb.publish( events.publish.delete, id );
-    }
+    };
     
     /**
     * Function: done
@@ -227,7 +231,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     var done = function( ev ){
       id = $(this).parent().parent().attr("id");
       sb.publish( events.publish.done, id );
-    }
+    };
 
     /**
     * Function: undo
@@ -235,7 +239,23 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     var undo = function( ev ){
       id = $(this).parent().parent().attr("id");
       sb.publish( events.publish.undo, id );
-    }
+    };
+
+    /**
+    * Function: favDisable
+    */
+    var favDisable = function( ev ){
+      id = $(this).parent().parent().attr("id");
+      sb.publish( events.publish.disable_fav, id );
+    };
+
+    /**
+    * Function: favEnable
+    */
+    var favEnable = function( ev ){
+      id = $(this).parent().parent().attr("id");
+      sb.publish( events.publish.enable_fav, id );
+    };
 
     /**
     * Function: select
