@@ -7,7 +7,23 @@
  * This class contains the list module for fast.
  */
 fast.modules.list = fast.modules.list || (function( window, undefined ){
-    
+
+  // container for all events
+  var events = {
+    publish : {
+      delete: "collection/delete",
+      done: "collection/done",
+      undo: "collection/undo",
+      select: "collection/select",
+    },
+    subscribe : {
+      collection: "collection/changed",
+      mask: "mask/changed",
+      group: "group/changed",
+      search: "cli/search"
+    }
+  };
+
   /**
   * Class: list.controller 
   */
@@ -36,7 +52,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
 	}
       }
     };
-    
+
     /**
     * Function: onMaskChanged
     */
@@ -45,7 +61,29 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       refilter();
       model.notify();      
     };
-        
+
+    /**
+    * Function: onSearch
+    */
+    var onSearch = function( pattern ){
+
+      var mask = {};
+      var search = new RegExp( pattern, 'gi' );
+
+      for( var i in model.collection ){	
+	
+	if( search.test( model.collection[i].title ) ){
+	  mask[ i ] = i;
+	}
+      }
+
+      model.masks["search"] = mask;
+      refilter();
+      model.masks["search"] = undefined; // reset the mask
+      model.notify();
+
+    };
+
     /**
     * Function: equal
     */
@@ -102,38 +140,39 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     * Function: refilter
     */
     var refilter = function(){
-      
+
       var masks = [];
-            
+
       for( var i in model.masks ){
  	if( model.masks[i] ){
  	  masks.push( model.masks[i] );
  	}
       }
-      
+
       model.filtered = {};
       var combinedMask = combineMasks( masks, equal );
-      for( var i in model.combinedMask ){
+      for( var i in combinedMask ){
 	model.filtered[i] = model.collection[i];
       }
 
-      model.grouped = {};      
+      model.grouped = {};
       for( var i in model.groupedMask ){
 	model.grouped[ i ] = combineMasks([ model.groupedMask[i], combinedMask ], equal );
       };
     };
-        
+
     /**
     * Function: init
     */    
     var init = function(){
-      
+
       model = sb.getModel("model");
       view = new sb.getView("view")();
-      view.init( sb, model );      
-      sb.subscribe("collection/changed", onCollectionChanged );
-      sb.subscribe("mask/changed", onMaskChanged );
-      sb.subscribe("group/changed", onGroupChanged );
+      view.init( sb, model );
+      sb.subscribe( events.subscribe.collection, onCollectionChanged );
+      sb.subscribe( events.subscribe.mask, onMaskChanged );
+      sb.subscribe( events.subscribe.group, onGroupChanged );
+      sb.subscribe( events.subscribe.search, onSearch );
     };
     
     /**
@@ -179,7 +218,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var remove = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish("collection/delete", id );
+      sb.publish( events.publish.delete, id );
     }
     
     /**
@@ -187,17 +226,17 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     */
     var done = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish("collection/done", id );
+      sb.publish( events.publish.done, id );
     }
-    
+
     /**
     * Function: undo
     */
     var undo = function( ev ){
       id = $(this).parent().parent().attr("id");
-      sb.publish("collection/undo", id );
+      sb.publish( events.publish.undo, id );
     }
-    
+
     /**
     * Function: select
     */    
@@ -205,9 +244,9 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
       id = $(this).attr("id");
       model.selected[0] = id;
       model.notify();
-      sb.publish("collection/select", id );
+      sb.publish( events.publish.select, id );
     };
-    
+
     /**
     * Function: update
     */

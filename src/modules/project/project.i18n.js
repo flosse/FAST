@@ -1,12 +1,12 @@
 fast.modules.project.i18n = fast.modules.project.i18n || {
   en:{
     Project: "Project",
-    All: "All",
+    All: "All projects",
     WithoutProject: "Without project"
   }, 
   de: {
-    Project: "Project",
-    All: "All",
+    Project: "Projekt",
+    All: "Alle Projekte",
     WithoutProject: "Ohne Projekt"
   }  
 };
