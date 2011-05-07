@@ -105,7 +105,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var remove = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.DELETE, getCurrent() );
+				sb.publish( fast.events.DELETE, getCurrent().id );
 				model.notify();
       }
     };
@@ -115,7 +115,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var done = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.DONE, getCurrent() );
+				sb.publish( fast.events.DONE, getCurrent().id );
 				model.notify();
       }
     };
@@ -125,7 +125,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var undo = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.UNDO, getCurrent() );
+				sb.publish( fast.events.UNDO, getCurrent().id );
 				model.notify();
       }
     };
@@ -135,7 +135,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var disableFav = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.UNFAVORED, getCurrent() );
+				sb.publish( fast.events.UNFAVORED, getCurrent().id );
 				model.notify();
       }
     };
@@ -145,7 +145,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var enableFav = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.FAVORED, getCurrent() );
+				sb.publish( fast.events.FAVORED, getCurrent().id );
 				model.notify();
       }
     };
