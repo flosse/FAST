@@ -1,18 +1,37 @@
 # FAST - Free All Scrambled Thoughts
 
-FAST is a little ToDo web application that acts as a demo for [scaleApp](https://github.com/flosse/scaleApp).
+FAST is a little ToDo web application that acts as a demo for
+[scaleApp](https://github.com/flosse/scaleApp).
 
 # Use it
 
 Play around with the [demo](http://scaleapp.org/demo/fast/) and have fun!
 
-## Contexts
+## Additional informations
 
-You can add a task with a context by using 'c' as a Keyword followed by your context name(s):
+You can add a task with several meta informations by using `#` plus a keyword
+followed by your additional informations.
 
-    myTaskname#cMyContext
+		myTaskname #c myContext
 
-## Supported Browsers 
+creates an item with "myContext" as context.
+
+		anotherTask #c context #p projectOne, projectTwo #f
+
+creates a favorited item with the context "context"
+and the projects "projectOne" and "projectTwo".
+
+### Available keywords
+
+- c: context(s)
+- p: project(s)
+- f: favorite
+
+## Search
+
+To search for an item just type `/` follwed by your search term.
+
+## Supported Browsers
 
 FAST was only tested with
 
