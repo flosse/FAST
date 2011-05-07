@@ -160,3 +160,7 @@ button{
   text-align: center;
   font-size: 3em;
 }
+ 
+.ui-widget{
+	font-size: 0.8em;
+}

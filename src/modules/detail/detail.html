@@ -12,12 +12,15 @@
 </div>
 <textarea class="note" cols="40" rows="5" {{if !name}}disabled{{/if}} >${note}</textarea>
 <div class="toolbar">
-  <label>${label_contexts}:</label><input type="text" class="contexts" value="{{each contexts}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}" {{if !name}}disabled{{/if}}/>
+	<label>${label_contexts}:</label>
+	<input type="text" class="contexts" value="{{each contexts}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}" {{if !name}}disabled{{/if}}/>
 </div>
 <div class="toolbar">
-  <label>${label_projects}:</label><input type="text" class="projects" value="{{each projects}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}" {{if !name}}disabled{{/if}}/>
+	<label>${label_projects}:</label>
+	<input type="text" class="projects" value="{{each projects}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}" {{if !name}}disabled{{/if}}/>
 </div>
-
-  
-
-
+<div class="toolbar">
+	<label>${label_due}:</label>
+	<input class="duedate" {{if !name}}disabled{{/if}} size="10" />
+  <button class="clear-date" {{if !name || !due }}disabled{{/if}}>${label_clearDate}</button>
+</div>

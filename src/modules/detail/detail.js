@@ -7,77 +7,80 @@
  * This class contains the detail module for fast.
  */
 fast.modules.detail = fast.modules.detail || (function( window, undefined ){
-  
+
   /**
    * Class: detail.controller
-   */  
+   */
   var controller = function( sb ){
-    
+
     var model;
     var view;
-    
+
     /**
      * Function: onCollectionChanged
-     */    
+     */
     var onCollectionChanged = function( c ){
       model.entries = c;
-     // model.notify();
+      model.notify();
     };
-    
+
     /**
-     * Function: onSelection
+     * Function: onSelection    
      */
-    var onSelection = function( id ){   
+    var onSelection = function( id ){
       model.selected = [id];
       model.notify();
     };
-    
+
     /**
      * Function: init
      */
     var init = function(){
-	model = sb.getModel("model");
-	model.subscribe( this );
-	view = new sb.getView("view")();
-	view.init( sb, model );
-	sb.subscribe( fast.events.CHANGED, onCollectionChanged );
-	sb.subscribe( fast.events.SELECT, onSelection );	
+			model = sb.getModel("model");
+			model.subscribe( this );
+			view = new sb.getView("view")( sb, model );
+			view.init();
+			sb.subscribe( fast.events.CHANGED, onCollectionChanged );
+			sb.subscribe( fast.events.SELECT, onSelection );
     };
-    
+
     /**
      * Function: destroy
      */
     var destroy = function(){
-	// nothing yet
+			sb.unsubscribe( fast.events.CHANGED );
+			sb.unsubscribe( fast.events.SELECT );
+			model = null;
+			view.destroy();
+			view = null;
     };
-    
-    //public API
-    return({
+
+    // public API
+    return ({
       init: init,
       destroy: destroy
-    });    
+    });
+
   };
-  
+
   /**
    * Class: detail.view
    */
-  var view = function(){
-    
-    var model;
-    var sb;
+  var view = function( sb, model ){
+
     var c;
     var tmpl;
-    
+
     /**
      * Function: init
      */
-    var init = function( s, m ){
-      sb = s;
-      model = m;
+    var init = function( ){
+
       model.subscribe( this );
-      c = sb.getContainer() 
-      tmpl = sb.getTemplate("detail");	
-      model.notify();      
+			$.datepicker.regional[ scaleApp.i18n.getBrowserLanguage() ]; 
+      c = sb.getContainer()
+      tmpl = sb.getTemplate("detail");
+      model.notify();
       c.delegate( "button.due",'click', done );
       c.delegate( "button.done",'click', undo );
       c.delegate( "button.favorite.active",'click', disableFav );
@@ -87,45 +90,53 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       c.delegate( "input.contexts",'keyup', onCtxtChanged );
       c.delegate( "input.projects",'keyup', onProjChanged );
       c.delegate( "textarea.note",'keyup', onNoteChanged );
+
     };
-    
+
+		/**
+		 * Function: destroy
+		 */
+		var destroy = function(){
+			// nothing implemented yet
+		};
+
     /**
      * Function: remove
      */
     var remove = function(){
       if( model.selected[0] ){
-	sb.publish( fast.events.DELETE, model.selected[0] );
-	model.notify();
-      }      
+				sb.publish( fast.events.DELETE, getCurrent() );
+				model.notify();
+      }
     };
-    
+
     /**
      * Function: done
      */
     var done = function(){
       if( model.selected[0] ){
-	sb.publish( fast.events.DONE, model.selected[0] );
-	model.notify();
-      }      
+				sb.publish( fast.events.DONE, getCurrent() );
+				model.notify();
+      }
     };
-    
+
     /**
      * Function: undo
      */
     var undo = function(){
       if( model.selected[0] ){
-	sb.publish( fast.events.UNDO, model.selected[0] );
-	model.notify();
+				sb.publish( fast.events.UNDO, getCurrent() );
+				model.notify();
       }
     };
-    
+
     /**
     * Function: disableFav
     */
     var disableFav = function(){
       if( model.selected[0] ){
-	sb.publish( fast.events.UNFAVORED, model.selected[0] );
-	model.notify();
+				sb.publish( fast.events.UNFAVORED, getCurrent() );
+				model.notify();
       }
     };
 
@@ -134,127 +145,187 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var enableFav = function(){
       if( model.selected[0] ){
-	sb.publish( fast.events.FAVORED, model.selected[0] );
-	model.notify();
+				sb.publish( fast.events.FAVORED, getCurrent() );
+				model.notify();
       }
     };
-    
+
     /**
      * Function: trueFalseToYesNo
      */
-    var trueFalseToYesNo = function( val ){ 
+    var trueFalseToYesNo = function( val ){
       if( val === undefined ) return "";
       return val ? sb._("Yes") : sb._("No")
     };
-    
+
     /**
      * Function: getCtxtString
      */
-    var getCtxtString = function( c ){	
+    var getCtxtString = function( c ){
       if( c ){
-	if( c.length > 1 ){
-	  return sb._("Contexts");
-	}	  
+				if( c.length > 1 ){
+					return sb._("Contexts");
+				}
       }
       return sb._("Context");
     };
-    
+
     /**
      * Function: onTitleChanged
-     */    
-    var onTitleChanged = function(){
-      var item = model.entries[ model.selected[0] ];
-      item.title = $(this).val();
-      sb.publish( fast.events.CHANGE, item );
+     */
+    var onTitleChanged = function( ev ){
+			if( ev.which === 13 ){
+				var item = getCurrent();
+				item.title = $(this).val();
+				sb.publish( fast.events.UPDATE, item );
+			}else if( ev.which === 27 ){
+				$(this).val( getCurrent().title ).blur();
+			}
     };
-    
+
     /**
      * Function: onCtxtChanged
-     */    
-    var onCtxtChanged = function(){
-      var item = model.entries[ model.selected[0] ];     
-      var a = $(this).val().split(',');
-      for( var j in a ){
-	a[j] = a[j].trim();
-      }
-     item.contexts = a;
-     sb.publish( fast.events.UPDATE, item );
+     */
+    var onCtxtChanged = function( ev ){
+			if( ev.which === 13 ){
+				var item = getCurrent();
+				var a = $(this).val().split(',');
+				for( var j in a ){
+					a[j] = a[j].trim();
+				}
+				item.contexts = a;
+				sb.publish( fast.events.UPDATE, item );
+			}else if( ev.which === 27 ){
+				update();
+			}
     };
-    
+
      /**
      * Function: onProjChanged
-     */    
-    var onProjChanged = function(){
-      var item = model.entries[ model.selected[0] ];     
-      var a = $(this).val().split(',');
-      for( var j in a ){
-	a[j] = a[j].trim();
-      }
-     item.projects = a;
-     sb.publish( fast.events.UPDATE, item );
+     */
+    var onProjChanged = function( ev ){
+			if( ev.which === 13 ){
+				var item = getCurrent();
+				var a = $(this).val().split(',');
+				for( var j in a ){
+					a[j] = a[j].trim();
+				 }
+				item.projects = a;
+				sb.publish( fast.events.UPDATE, item );
+			}else if( ev.which === 27 ){
+				update();
+			}
     };
-    
+
     /**
      * Function: onNoteChanged
-     */    
+     */
     var onNoteChanged = function(){
-      var item = model.entries[ model.selected[0] ];     
-      var note = $(this).val();      
-      item.note = note;
+			var item = getCurrent();
+			item.note = $(this).val();
+			sb.publish( fast.events.UPDATE, item );
+    };
+
+		/**
+		 * Function: onDateChanged
+		 */
+		var onDateChanged = function( dateText, inst ){
+			var item = getCurrent();
+			var date = $(this).datepicker("getDate");
+			if( date ){
+				item.due = date.getTime();
+		  }else{
+				item.due = false;
+			}
       sb.publish( fast.events.UPDATE, item );
-    };    
-    
+		};
+
+		/**
+		 * Function: getCurrent
+		 */
+		var getCurrent = function(){
+			return model.entries[ model.selected[0] ];
+		};
+
     /**
      * Function: update
      */
     var update = function(){
-
-      c.empty();   
-      var item = {};      
+			
+			var noteIsFocussed = c.find("textarea.note").is(":focus");
+      var item = {};
       
-      if( model.selected.length === 1 ){
-	item = model.entries[ model.selected[0] ] || item;
-      }
-                  
-      sb.tmpl( tmpl, {
-	label_delete: sb._("delete"),
-	title: sb._("Details"),
-	label_name: sb._("Name"),
-	name: item.title,
-	label_note: sb._("Note"),
-	label_contexts: getCtxtString( item.contexts ),
-	contexts: item.contexts,
-	label_projects: sb._("Projects"),
-	projects: item.projects,
-	label_new: sb._("New"),
-	isNew: trueFalseToYesNo( item.new ),
-	done: item.done,
-	note: item.note,
-	favorite: item.favorite
-      }).appendTo( c );
-      c.find("textarea.note").autoGrow();
-    };
-        
-    // public API
-    return({
-      init: init,
-      update: update
-    });
-  };
-  
+			if( !noteIsFocussed ){
+		
+				c.empty();
+
+				if( model.selected.length === 1 ){
+					item = model.entries[ model.selected[0] ] || item;
+				}
+
+				sb.tmpl( tmpl, {
+					label_delete: sb._("delete"),
+					title: sb._("Details"),
+					label_name: sb._("Name"),
+					name: item.title,
+					label_note: sb._("Note"),
+					label_contexts: getCtxtString( item.contexts ),
+					contexts: item.contexts,
+					label_projects: sb._("Projects"),
+					projects: item.projects,
+					label_new: sb._("New"),
+					isNew: trueFalseToYesNo( item.new ),
+					done: item.done,
+					due: item.due,
+					label_due: sb._("DueDate"),
+					label_clearDate: sb._("clearDate"),
+					note: item.note,
+					favorite: item.favorite
+				}).appendTo( c );
+
+				c.find("textarea.note")
+					.autoGrow()
+					.focusout( update );
+
+				var due = c.find("input.duedate");
+
+				due.datepicker({ 
+					onSelect: onDateChanged,
+				});
+				
+				if( item.due ){
+					due.datepicker("setDate", new Date(item.due) );
+				}
+	
+				c.find("button.clear-date").click(function(){
+						due.datepicker("setDate", null );
+						onDateChanged();
+				});
+			}
+		};
+
+		// public API
+		return({
+			init: init,
+			update: update,
+			destroy: destroy
+		});
+
+	};
+
   /**
-   * Class: detail.view
+   * Class: detail.model
    */
   var model = {
     selected: [],
     entries: {}
   };
-  
+
   // public modules
   return({
     controller: controller,
     model: model,
-    view: view
-  });
-  
+    view: view,
+	});
+
 })( window );

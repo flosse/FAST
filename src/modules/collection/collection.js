@@ -87,6 +87,10 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       changeProperty( id, 'favorite', false );
     };
     
+    var setDueDate = function( e ){
+      changeProperty( e.id, 'due', e.date );
+    };
+    
     /**
     * Function: updateEntry
     */        
@@ -153,12 +157,13 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     * Function: init
     */        
     var init = function(){
-                  
+
       collection = sb.getModel("collection");
       collection.subscribe( this );
       collection.entries = restoreData();
-      
-      entry = sb.getModel("entry");      
+
+      entry = sb.getModel("entry");
+
       sb.subscribe( fast.events.CREATE, create );
       sb.subscribe( fast.events.DONE, done );
       sb.subscribe( fast.events.UNDO, undo );
@@ -167,16 +172,17 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       sb.subscribe( fast.events.UPDATE, updateEntry );
       sb.subscribe( fast.events.FAVORED, enableFav );
       sb.subscribe( fast.events.UNFAVORED, disableFav );
-      
+      sb.subscribe( fast.events.DUE, setDueDate );
+
     };
-    
+
     /**
     * Function: destroy
-    */        
+    */
     var destroy = function(){
       // nothing yet
     };
-    
+
     // public API
     return ({ 
       init: init, 
@@ -184,19 +190,19 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       update: update
     });
   };
-  
+
   /**
   * Class: collection
-  */          
+  */
   var collection = {
     entries: {}
   };
-  
+
   /**
   * Class: entry
-  */          
+  */
   var entry = function( id, title ){
-    
+
     return({
       id: id,
       title: title,
@@ -205,16 +211,18 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       new: true,
       done: false,
       note: "",
-      favorite: false
-    });    
-    
-  };  
-  
+      favorite: false,
+      due: false,
+      created: (new Date()).getTime()
+    });
+
+  };
+
   // public modules
   return({
     controller: controller,
     entry: entry,
     collection: collection
   });
-  
+
 })( window );

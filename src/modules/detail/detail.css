@@ -23,6 +23,12 @@
   padding: 0.4em;
 }
 
+.detail .toolbar label{
+	width: 6em;
+	display: inline-block;
+	text-align: right;
+}
+
 .detail textarea{
   border: 1px solid #ccc;
   background: #eee;
@@ -135,7 +141,16 @@
   margin-right: 0.4em;
   background-image: url("img/fav.svg");
 }
+
 .detail button.favorite.active,
 .detail button.favorite:hover{
   background-image: url("img/fav_hover.svg");
+}
+
+.detail input.duedate{
+  text-decoration: none;
+  -webkit-appearance: textfield;
+  -webkit-rtl-ordering: logical;
+  -webkit-user-select: text;
+	text-align: center;
 }
