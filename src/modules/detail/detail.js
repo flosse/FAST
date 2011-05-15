@@ -174,7 +174,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: onTitleChanged
      */
     var onTitleChanged = function( ev ){
-			if( ev.which === 13 ){
+			if( ev.which === 13 || ev.which === 9 ){
 				var item = getCurrent();
 				item.title = $(this).val();
 				sb.publish( fast.events.UPDATE, item );
@@ -187,7 +187,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: onCtxtChanged
      */
     var onCtxtChanged = function( ev ){
-			if( ev.which === 13 ){
+			if( ev.which === 13 || ev.which === 9 ){
 				var item = getCurrent();
 				var a = $(this).val().split(',');
 				for( var j in a ){
@@ -204,7 +204,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: onProjChanged
      */
     var onProjChanged = function( ev ){
-			if( ev.which === 13 ){
+			if( ev.which === 13 || ev.which === 9 ){
 				var item = getCurrent();
 				var a = $(this).val().split(',');
 				for( var j in a ){
