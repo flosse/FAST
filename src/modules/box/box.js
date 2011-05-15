@@ -135,7 +135,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
    */
   var model = {
     boxes: {},
-    current: keywords.ALL
+    current: keywords.NEW
   };
   
   /**
