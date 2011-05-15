@@ -18,6 +18,8 @@ var fast = fast || (function( window, undefined ){
 		UPDATE: "collection/update",
 		FAVORED: "collection/favored",
 		UNFAVORED: "collection/unfavored",
+		SET_WAIT: "collection/setWait",
+		UNSET_WAIT: "collection/unsetWait",
 		MASK: "mask/changed",
 		SELECT: "select",
 		GROUP: "group/changed",

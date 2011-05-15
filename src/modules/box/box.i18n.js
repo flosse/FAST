@@ -3,12 +3,14 @@ fast.modules.box.i18n = fast.modules.box.i18n || {
     Box: "Box",
     All: "All",
     New: "New",
-    Done: "Done"
+    Done: "Done",
+    Waiting: "Waiting"
   }, 
   de: {
     Box: "Fach",
     All: "Alle",
     New: "Neu",
-    Done: "Erledigt"
+    Done: "Erledigt",
+    Waiting: "Warten"
   }  
 };

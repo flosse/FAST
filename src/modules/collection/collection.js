@@ -87,6 +87,13 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       changeProperty( id, 'favorite', false );
     };
     
+    var setWait = function( id ){
+      changeProperty( id, 'wait', true );
+    };
+    
+    var unsetWait = function( id ){
+      changeProperty( id, 'wait', false );
+    };
     var setDueDate = function( e ){
       changeProperty( e.id, 'due', e.date );
     };
@@ -95,6 +102,7 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     * Function: updateEntry
     */        
     var updateEntry = function( e ){
+			e.new = false;
       collection.entries[ e.id ] = e;
       saveData( collection.entries );
       sb.publish( fast.events.CHANGED, collection.entries );
@@ -173,6 +181,8 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       sb.subscribe( fast.events.FAVORED, enableFav );
       sb.subscribe( fast.events.UNFAVORED, disableFav );
       sb.subscribe( fast.events.DUE, setDueDate );
+      sb.subscribe( fast.events.SET_WAIT, setWait );
+      sb.subscribe( fast.events.UNSET_WAIT, unsetWait );
 
     };
 
@@ -209,6 +219,7 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
       contexts: [],
       projects: [],
       new: true,
+      wait: false,
       done: false,
       note: "",
       favorite: false,

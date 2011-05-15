@@ -147,6 +147,37 @@
   background-image: url("img/fav_hover.svg");
 }
 
+.detail button.wait:disabled,
+.detail button.wait:disabled:hover,
+.detail button.wait{
+  width: 1.4em;
+  height: 1.4em;
+  background: transparent;
+  border: none;
+  margin-right: 0.4em;
+  background-image: url("img/wait.svg");
+}
+
+.detail button.wait.active,
+.detail button.wait:hover{
+  background-image: url("img/wait_hover.svg");
+}
+
+.detail button.delete:disabled,
+.detail button.delete:disabled:hover,
+.detail button.delete{
+  width: 1.4em;
+  height: 1.4em;
+  background: transparent;
+  border: none;
+  margin-right: 0.4em;
+  background-image: url("img/delete.svg");
+}
+
+.detail button.delete:hover{
+  background-image: url("img/delete_hover.svg");
+}
+
 .detail input.duedate{
   text-decoration: none;
   -webkit-appearance: textfield;

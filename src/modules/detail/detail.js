@@ -85,6 +85,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       c.delegate( "button.done",'click', undo );
       c.delegate( "button.favorite.active",'click', disableFav );
       c.delegate( "button.favorite.inactive",'click', enableFav );
+      c.delegate( "button.wait.active",'click', disableWait );
+      c.delegate( "button.wait.inactive",'click', enableWait );
       c.delegate( "button.delete",'click', remove );
       c.delegate( "input.name",'keyup', onTitleChanged );
       c.delegate( "input.contexts",'keyup', onCtxtChanged );
@@ -146,6 +148,26 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     var enableFav = function(){
       if( model.selected[0] ){
 				sb.publish( fast.events.FAVORED, getCurrent().id );
+				model.notify();
+      }
+    };
+
+    /**
+    * Function: disableWait
+    */
+    var disableWait = function(){
+      if( model.selected[0] ){
+				sb.publish( fast.events.UNSET_WAIT, getCurrent().id );
+				model.notify();
+      }
+    };
+
+    /**
+    * Function: enableWait
+    */
+    var enableWait = function(){
+      if( model.selected[0] ){
+				sb.publish( fast.events.SET_WAIT, getCurrent().id );
 				model.notify();
       }
     };
@@ -280,7 +302,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 					label_due: sb._("DueDate"),
 					label_clearDate: sb._("clearDate"),
 					note: item.note,
-					favorite: item.favorite
+					favorite: item.favorite,
+					wait: item.wait
 				}).appendTo( c );
 
 				c.find("textarea.note")

@@ -8,7 +8,8 @@
 <div class="toolbar">
   <button class="{{if done}}done{{else}}due{{/if}}" {{if !name}}disabled{{/if}}></button>    
   <button class="favorite {{if favorite}}active{{else}}inactive{{/if}}" {{if !name}}disabled{{/if}}></button>
-  <button class="delete" {{if !name}}disabled{{/if}}>${label_delete}</button>
+  <button class="wait {{if wait}}active{{else}}inactive{{/if}}" {{if !name}}disabled{{/if}}></button>
+  <button class="delete" {{if !name}}disabled{{/if}}></button>
 </div>
 <textarea class="note" cols="40" rows="5" {{if !name}}disabled{{/if}} >${note}</textarea>
 <div class="toolbar">
