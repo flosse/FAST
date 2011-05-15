@@ -38,7 +38,7 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 			id = $(this).parent().parent().attr("id");
 			sb.publish( fast.events.DONE, id );
 		};
-		
+
 		/**
 		* Function: undo
 		*/
@@ -46,7 +46,7 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 			id = $(this).parent().parent().attr("id");
 			sb.publish( fast.events.UNDO, id );
 		};
-		
+
 		/**
 		* Function: favDisable
 		*/
@@ -54,7 +54,7 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 			id = $(this).parent().parent().attr("id");
 			sb.publish( fast.events.UNFAVORED, id );
 		};
-		
+
 		/**
 		* Function: favEnable
 		*/
@@ -62,10 +62,10 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 			id = $(this).parent().parent().attr("id");
 			sb.publish( fast.events.FAVORED, id );
 		};
-		
+
 		/**
 		* Function: select
-		*/    
+		*/
 		var select = function( ev ){
 			id = $(this).attr("id");
 			model.selected[0] = id;
@@ -84,13 +84,32 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 			model.subscribe( this );
 		};
 
+		var filterNewItems = function( items, delta ){
+			return $.map( items, function( e ){
+				if( e.favorite === true ){
+					if( e.done === false ){
+						return e;
+					}else if( typeof e.done === "number" ){
+						if( e.done > (new Date).getTime() - delta ){
+							return e;
+						}
+					}
+				}
+			});
+		};
+
 		var update = function(){
-			c.empty();	
-			sb.tmpl( tmpl, { header: sb._("Favorites"), entries: model.entries, selected: model.selected }).appendTo( c );
+
+			c.empty();
+			sb.tmpl( tmpl, {
+					header: sb._("Favorites"),
+				 	entries: filterNewItems( model.entries, 86400000 ),
+				 	selected: model.selected
+				}).appendTo( c );
 		};
 
 		return ({
-			init: init,   
+			init: init,
 			update: update
 		});
 	};

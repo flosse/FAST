@@ -1,14 +1,13 @@
 <h3>${header}</h3>
 <ul class="list">
 	{{each entries}}
-		{{if (favorite === true) }}
-			<li id="${id}" class="{{if (selected === id) }}selected {{/if}}{{if done}}done{{else}}due{{/if}}">
+		<li id="${id}" class="{{if (selected === id) }}selected {{/if}}
+			{{if done}}done{{else}}due{{/if}}">
 				<div> 
 					<button class="{{if done }}done{{else}}due{{/if}}"></button>
 					<button class="favorite active"></button>
 					<a href="#">${title}</a> 
 				</div>
 			</li>
-		{{/if}}
 	{{/each}}
 </ul>

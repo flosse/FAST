@@ -67,7 +67,7 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
     * Function: done
     */        
     var done = function( id ){      
-      changeProperty( id, 'done', true );
+			changeProperty( id, 'done', (new Date).getTime() );
       changeProperty( id, 'new', false );
     };
     
