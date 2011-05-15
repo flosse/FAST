@@ -54,7 +54,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 			view.destroy();
 			view = null;
     };
-
+		
     // public API
     return ({
       init: init,
@@ -81,6 +81,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       c = sb.getContainer()
       tmpl = sb.getTemplate("detail");
       model.notify();
+
       c.delegate( "button.due",'click', done );
       c.delegate( "button.done",'click', undo );
       c.delegate( "button.favorite.active",'click', disableFav );
@@ -88,12 +89,32 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
       c.delegate( "button.wait.active",'click', disableWait );
       c.delegate( "button.wait.inactive",'click', enableWait );
       c.delegate( "button.delete",'click', remove );
-      c.delegate( "input.name",'keyup', onTitleChanged );
-      c.delegate( "input.contexts",'keyup', onCtxtChanged );
-      c.delegate( "input.projects",'keyup', onProjChanged );
-      c.delegate( "textarea.note",'keyup', onNoteChanged );
+
+      c.delegate( "input.name",'keydown keyup', onTitleChanged );
+      c.delegate( "input.contexts",'keydown keyup', onCtxtChanged );
+      c.delegate( "input.projects",'keydown keyup', onProjChanged );
+      c.delegate( "textarea.note",'keydown keyup', onNoteChanged );
+
+      c.delegate( "input",'focusout', onFocusOut );
+      c.delegate( "input",'focusin', onFocusIn );
+      c.delegate( "textarea",'focusout', onFocusOut );
+      c.delegate( "textarea",'focusin', onFocusIn );
 
     };
+
+		/**
+		 * Function: onFocusOut
+		 */
+		var onFocusOut = function( ev ){
+			model.focus = false;
+		};
+
+		/**
+		 * Function: onFocusIn
+		 */
+		var onFocusIn = function( ev ){
+			model.focus = true;
+		};
 
 		/**
 		 * Function: destroy
@@ -274,10 +295,9 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var update = function(){
 			
-			var noteIsFocussed = c.find("textarea.note").is(":focus");
       var item = {};
       
-			if( !noteIsFocussed ){
+			if( !model.focus ){
 		
 				c.empty();
 
