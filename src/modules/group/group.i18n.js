@@ -7,7 +7,8 @@ fast.modules.group.i18n = fast.modules.group.i18n || {
     WithoutContext: "Without context",
     WithoutProject: "Without project",
     New: "New",
-    Done: "Done"
+    Done: "Done",
+    Waiting: "Waiting"
   }, 
   de: {
     Grouping: "Gruppierung",
@@ -17,6 +18,7 @@ fast.modules.group.i18n = fast.modules.group.i18n || {
     WithoutContext: "Ohne Kontext",
     WithoutProject: "Ohne Projekt",
     New: "Neu",
-    Done: "Erledigt"
+    Done: "Erledigt",
+    Waiting: "Warten"
   }  
 };

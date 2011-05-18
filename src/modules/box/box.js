@@ -52,36 +52,29 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     * Function: filterByBox
     */
     var filterByBox = function( items, box ){
-      var entries = { };
+
+			var filter = function( items, cond ){
+				var entries = { };       
+				$.each( items, function( i, item ){
+					if( cond( item ) ){ entries[i] = i; }
+				});
+				return entries;
+			};
+
       switch( box ){
-			case "ALL":
-				for( var i in items ){
-					entries[i] = items[i].id;
-				}
-				break;
-			case "DONE":
-				for( var i in items ){
-					if( items[i].done === true ){
-						entries[i] = items[i].id;
-					}
-				}
-				break;
-			case "NEW":
-				for( var i in items ){
-					if( items[i].new === true ){
-						entries[i] = items[i].id;
-					}
-				}
-				break;
-			case "WAITING":
-				for( var i in items ){
-					if( items[i].wait === true ){
-						entries[i] = items[i].id;
-					}
-				}
-				break;
+
+				case "ALL":
+					return filter( items, function(){ return true; } );
+				case "DONE":
+					return filter( items, function( item ){ return ( item.done !== false ); } );
+				case "NEW":
+					return filter( items, function( item ){ return ( item.new === true ); } );
+				case "WAITING":
+					return filter( items, function( item ){ return ( item.wait === true ); } );
+					
       }
-      return entries;
+
+      return {};
     };
 
     /**
@@ -106,7 +99,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     var countDone = function( entries ){
       var count = 0;
       for( var i in entries ){
-				if( entries[i].done === true ){
+				if( entries[i].done !== false ){
 					count++;
 				}
       }
@@ -156,7 +149,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
    */
   var model = {
     boxes: {},
-    current: keywords.NEW
+    current: keywords.ALL
   };
 
   /**

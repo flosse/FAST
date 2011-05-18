@@ -217,12 +217,12 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: onTitleChanged
      */
     var onTitleChanged = function( ev ){
-			if( ev.which === 13 || ev.which === 9 ){
+			if( ev.which === 27 ){
+				$(this).val( getCurrent().title ).blur();
+			}else{
 				var item = getCurrent();
 				item.title = $(this).val();
 				sb.publish( fast.events.UPDATE, item );
-			}else if( ev.which === 27 ){
-				$(this).val( getCurrent().title ).blur();
 			}
     };
 
@@ -230,7 +230,9 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: onCtxtChanged
      */
     var onCtxtChanged = function( ev ){
-			if( ev.which === 13 || ev.which === 9 ){
+			if( ev.which === 27 ){
+				$(this).blur();
+			}else{
 				var item = getCurrent();
 				var a = $(this).val().split(',');
 				for( var j in a ){
@@ -238,8 +240,6 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 				}
 				item.contexts = a;
 				sb.publish( fast.events.UPDATE, item );
-			}else if( ev.which === 27 ){
-				update();
 			}
     };
 
@@ -247,7 +247,10 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: onProjChanged
      */
     var onProjChanged = function( ev ){
-			if( ev.which === 13 || ev.which === 9 ){
+			if( ev.which === 27 ){
+				$(this).blur();
+			}
+			else{
 				var item = getCurrent();
 				var a = $(this).val().split(',');
 				for( var j in a ){
@@ -255,8 +258,6 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 				 }
 				item.projects = a;
 				sb.publish( fast.events.UPDATE, item );
-			}else if( ev.which === 27 ){
-				update();
 			}
     };
 
