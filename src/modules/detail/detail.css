@@ -40,6 +40,7 @@
 
 .detail textarea:focus{
   border-color: #aaa;
+  background: #fff;
 }
 
 .detail h3{
@@ -52,6 +53,11 @@
   text-align:center;
   background: transparent;
   border: none;
+}
+
+.detail h3 input:focus{
+  background: transparent;
+  text-decoration: underline;
 }
 
 .detail input{
@@ -68,8 +74,8 @@
 .detail input:focus{
   -webkit-box-shadow: none;
   -moz-box-shadow: none; 
-  text-decoration: underline;
   border-color: #aaa;
+  background: #fff;
 }
 
 .detail button{

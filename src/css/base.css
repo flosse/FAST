@@ -19,8 +19,8 @@ input{
   border-radius: 0.4em;
   -moz-border-radius: 0.4em;
   padding: 0.4em;
-  background: -webkit-gradient( linear, left top, left bottom, from(#ccc), to(#fff));
-  background: -moz-linear-gradient(top, #ccc, #fff);
+  background: -webkit-gradient( linear, left top, left bottom, from(#bbb), to(#eee));
+  background: -moz-linear-gradient(top, #bbb, #eee);
   margin: 0.3em;
   color: #444;
 }
@@ -29,6 +29,8 @@ input:focus{
   outline: none;
   -webkit-box-shadow: rgba(255, 0, 0, 0.7) 0px 0px 8px;
   -moz-box-shadow: rgba(255, 0, 0, 0.7) 0px 0px 8px;
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#fff));
+  background: -moz-linear-gradient(top, #ddd, #fff);
 }  
 
 button{
@@ -55,7 +57,7 @@ button{
 .content article{
  -webkit-box-flex: 10; 
  -moz-box-flex: 10; 
- min-width: 280px;
+ min-width: 22em;
 }
 
 .content aside{
