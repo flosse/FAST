@@ -31,7 +31,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     var updateBoxes = function( entries ){
       model.entries = entries;
       model.boxes = {};
-      model.boxes[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) };
+			model.boxes[ keywords.ALL ] = { name: sb._("All"), count: sb.count( filterByBox( entries, keywords.ALL ) ) };
       model.boxes[ keywords.NEW ] = { name: sb._("New"), count: countNew( entries ) };
       model.boxes[ keywords.WAITING ] = { name: sb._("Waiting"), count: countWaiting( entries ) };
       model.boxes[ keywords.DONE ] = { name: sb._("Done"), count: countDone( entries ) };
@@ -77,21 +77,42 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
 			var filter = function( items, cond ){
 				var entries = { };
 				$.each( items, function( i, item ){
-					if( cond( item ) ){ entries[i] = i; }
+					if( cond( item ) ){ entries[i] = item; }
 				});
 				return entries;
+			};
+
+			var reduce = function( items ){
+				var entries = { };
+				$.each( items, function( i, item ){
+					 entries[i] = i;
+				});
+				return entries;
+			};
+
+			var delta = 86400000; 
+
+			var doneFilter = function( item ){
+				if( typeof item.done === "number" ){
+					if( item.done < (new Date).getTime() - delta ){
+						return false;
+					}
+				}else if( item.done === true ){
+					return false;
+				}
+				return true;
 			};
 
       switch( box ){
 
 				case "ALL":
-					return filter( items, function(){ return true; } );
+					return reduce( filter( items, doneFilter ) );
 				case "DONE":
-					return filter( items, function( item ){ return ( item.done !== false ); } );
+					return reduce( filter( items, function( item ){ return ( item.done !== false ); } ));
 				case "NEW":
-					return filter( items, function( item ){ return ( item.new === true ); } );
+					return reduce( filter( items, function( item ){ return ( item.new === true ); } ));
 				case "WAITING":
-					return filter( items, function( item ){ return ( item.wait === true ); } );
+					return reduce( filter( filter( items, function( item ){ return ( item.wait === true ); } ), doneFilter ));
 
       }
 
