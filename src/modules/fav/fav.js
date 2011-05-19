@@ -11,11 +11,21 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 			model.notify();
 		};
 
+		var onItemChange = function( item ){
+
+			var oldItem = model.entries[ item.id ];
+			if( oldItem.favorite !== item.favorite ){
+				model.entries[ item.id ] = item;
+				model.notify();
+			}
+		};
+
 		var init = function(){
 			model = sb.getModel();
 			view = new sb.getView()( sb, model );
 			view.init();
 			sb.subscribe( fast.events.CHANGED, onChange );
+			sb.subscribe( fast.events.ITEM_CHANGED, onItemChange );
 		};
 
 		var destroy = function(){};

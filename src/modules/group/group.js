@@ -40,6 +40,26 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 			model.notify();
 		};
 
+		var updateGroupsForItem = function( item ){
+
+			var oldItem = model.entries[ item.id ];
+
+			if( oldItem.projects.length !== item.projects.length ){
+				model.entries[ item.id ] = item;
+				model.groups[ keywords.PROJECT ] = { name: sb._("Project"), count: countProjects( model.entries ) };
+				model.notify();
+			}
+			if( oldItem.contexts.length !== item.contexts.length ){
+				model.entries[ item.id ] = item;
+				model.groups[ keywords.CONTEXT ] = { name: sb._("Context"), count: countContexts( model.entries ) };
+				model.notify();
+			}
+			if( oldItem.new !== item.new || oldItem.done !== item.done || oldItem.wait !== item.wait ){
+				model.entries[ item.id ] = item;
+				model.notify();
+			}
+		};
+
 		/**
 		 * Class: group
 		 */
@@ -218,6 +238,7 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 			view = new sb.getView("view")();
 			view.init( sb, model );
 			sb.subscribe( fast.events.CHANGED, updateGroups );
+			sb.subscribe( fast.events.ITEM_CHANGED, updateGroupsForItem );
     };
 
     /**

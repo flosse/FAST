@@ -105,7 +105,7 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
 			e.new = false;
       collection.entries[ e.id ] = e;
       saveData( collection.entries );
-      sb.publish( fast.events.CHANGED, collection.entries );
+      sb.publish( fast.events.ITEM_CHANGED, e );
     };
     
     /**
@@ -131,10 +131,10 @@ fast.modules.collection = fast.modules.collection || (function( window, undefine
           
       localStorage.clear();
       for( i in entries ){
-	var e = entries[i];
-	if( e ){
-	  localStorage.setItem( e.id, JSON.stringify( e ) );
-	}
+				var e = entries[i];
+				if( e ){
+					localStorage.setItem( e.id, JSON.stringify( e ) );
+				}
       }    
     };
     

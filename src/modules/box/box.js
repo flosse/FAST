@@ -38,6 +38,27 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
       model.notify();
     };
 
+    var updateItem = function( item ){
+
+			var oldItem = model.entries[ item.id ];
+
+			if( oldItem.due !== item.due ){
+				model.entries[ item.id ] = item;
+				model.boxes[ keywords.DONE ] = { name: sb._("Done"), count: countDone( model.entries ) };
+				model.notify();
+			}
+			else if( oldItem.new !== item.new ){
+				model.entries[ item.id ] = item;
+				model.boxes[ keywords.NEW ] = { name: sb._("New"), count: countNew( model.entries ) };
+				model.notify();
+			}
+			else if( oldItem.wait !== item.wait ){
+				model.entries[ item.id ] = item;
+				model.boxes[ keywords.WAITING ] = { name: sb._("Waiting"), count: countWaiting( model.entries ) };
+			  model.notify();
+			}
+    };
+
     /**
      * Function: update
      */
@@ -54,7 +75,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     var filterByBox = function( items, box ){
 
 			var filter = function( items, cond ){
-				var entries = { };       
+				var entries = { };
 				$.each( items, function( i, item ){
 					if( cond( item ) ){ entries[i] = i; }
 				});
@@ -71,7 +92,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
 					return filter( items, function( item ){ return ( item.new === true ); } );
 				case "WAITING":
 					return filter( items, function( item ){ return ( item.wait === true ); } );
-					
+
       }
 
       return {};
@@ -127,6 +148,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
 			view = new sb.getView("view")();
 			view.init( sb, model );
 			sb.subscribe( fast.events.CHANGED, updateBoxes );
+			sb.subscribe( fast.events.ITEM_CHANGED, updateItem );
     };
 
     /**

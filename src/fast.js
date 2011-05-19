@@ -24,6 +24,7 @@ var fast = fast || (function( window, undefined ){
 		SELECT: "select",
 		GROUP: "group/changed",
 		CHANGED: "collection/changed",
+		ITEM_CHANGED: "collection/itemChanged",
 		DUE: "collection/due"
 	};
 
