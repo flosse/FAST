@@ -20,12 +20,18 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 			}
 		};
 
+		var onSelect = function( id ){
+			model.selected = id;
+			model.notify();
+		};
+
 		var init = function(){
 			model = sb.getModel();
 			view = new sb.getView()( sb, model );
 			view.init();
 			sb.subscribe( fast.events.CHANGED, onChange );
 			sb.subscribe( fast.events.ITEM_CHANGED, onItemChange );
+			sb.subscribe( fast.events.SELECT, onSelect );
 		};
 
 		var destroy = function(){};
@@ -78,10 +84,10 @@ fast.modules.fav = fast.modules.fav || (function( window, undefined ){
 		*/
 		var select = function( ev ){
 			id = $(this).attr("id");
-			model.selected[0] = id;
+			model.selected = id;
 			model.notify();
 			sb.publish( fast.events.SELECT, id );
-    		};
+		};
 
 
 		var init = function(){
