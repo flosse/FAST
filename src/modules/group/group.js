@@ -18,6 +18,16 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 		NEW: "New",
 		DONE: "Done",
 		WAIT: "Waiting",
+		DATE: "Date",
+		TODAY: "Today",
+		TOMORROW: "Tomorrow",
+		THIS_WEEK: "ThisWeek",
+		NEXT_WEEK: "NextWeek",
+		THIS_MONTH: "ThisMonth",
+		NEXT_MONTH: "NextMonth",
+		THIS_YEAR: "ThisYear",
+		NEXT_YEARS: "NextYears",
+		ANY_TIME: "AnyTime",
 	};
 
 	/**
@@ -34,6 +44,7 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 		var updateGroups = function( entries ){
 			model.entries = entries;
 			model.groups = {};
+			model.groups[ keywords.DATE ] = { name: sb._("Date"), count: countDateGroups( entries ) };
 			model.groups[ keywords.PROJECT ] = { name: sb._("Project"), count: countProjects( entries ) };
 			model.groups[ keywords.CONTEXT ] = { name: sb._("Context"), count: countContexts( entries ) };
 			model.groups[ keywords.BOX ] = { name: sb._("Box"), count: 3 };
@@ -99,6 +110,22 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 
 			},
 
+			byDate: function( items ){
+
+				var groups = { }
+				groups[	sb._( keywords.TODAY )		 ] =  dateFilter( items, null, 1 );
+				groups[	sb._( keywords.TOMORROW )	 ] =  dateFilter( items, 1,		 2 );
+				groups[	sb._( keywords.THIS_WEEK ) ] =  dateFilter( items, 2,		 7 );
+				groups[	sb._( keywords.NEXT_WEEK ) ] =  dateFilter( items, 7,		14 );
+				groups[	sb._( keywords.THIS_MONTH )] =  dateFilter( items, 14,	31 );
+				groups[	sb._( keywords.NEXT_MONTH )] =  dateFilter( items, 31,  62 );
+				groups[	sb._( keywords.THIS_YEAR ) ] =  dateFilter( items, 62, 365 );
+				groups[	sb._( keywords.NEXT_YEARS )] =  dateFilter( items, 365, null );
+				groups[	sb._( keywords.ANY_TIME )	 ] =  dateFilter( items, null, null );
+				
+				return groups;
+			},
+
 			/**
 			* Function: byContext
 			*/
@@ -124,6 +151,80 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 				groups[ sb._( keywords.WAIT ) ] = filterByBox( items, keywords.WAIT );
 				return groups;
 			}
+		};
+
+		var getDayRoundedDate = function( date ){
+			return new Date( date.getFullYear(), date.getMonth(), date.getDate() );
+		};
+
+		var getNewDayRoundedDate = function( days ){
+			var now = getDayRoundedDate( new Date() );
+			return now.setDate( now.getDate() + days );
+		};
+
+		var getEntriesForAnyTime = function( items ){
+
+			var entries = {};
+
+			for( var i in items ){
+
+				var e = items[i];
+				if( !e.due ){
+					entries[ e.id ] = e.id;
+				}
+			}
+
+			return entries;
+
+		};
+
+    var dateFilter = function( items, from, to ){
+
+			var min = from === null ? null : getNewDayRoundedDate( from );
+			var max = to === null		? null : getNewDayRoundedDate( to );
+			var anyTime = ( from === null && to === null );
+
+			var entries = { };
+
+			if( anyTime ){
+
+				for( var i in items ){
+
+					var e = items[i];
+					if( !e.due ){
+						entries[ e.id ] = e.id;
+					}
+				}
+
+				return entries;
+			}
+
+			for( var i in items ){
+
+				var e = items[i];
+
+				if( e.due ){
+					var due = new Date( e.due );
+
+					if( min && max ){
+						if( min <= due && max > due ){
+							entries[ e.id ] = e.id;
+						}
+					}else{
+						if( max ){
+							if( max > due ) {
+								entries[ e.id ] = e.id;
+							}
+						}
+						if( min ){
+							if( min <= due ) {
+								entries[ e.id ] = e.id;
+							}
+						}
+					}
+				}
+			}
+			return entries;
 		};
 
 		/**
@@ -178,6 +279,9 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
      */
     var regroup = function(){
       switch( model.current ){
+				case keywords.DATE:
+					model.grouped = group.byDate( model.entries );
+					break;
 				case keywords.CONTEXT:
 					model.grouped = group.byContext( model.entries );
 					break;
@@ -197,6 +301,10 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
       regroup();
       sb.publish( fast.events.GROUP, model.grouped );
     };
+
+		var countDateGroups = function( entries ){
+      return 0 // countByType( entries, '' );
+	 	};
 
     /**
     * Function: countProjects
@@ -261,7 +369,7 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
    */
   var model = {
     groups: {},
-    current: keywords.CONTEXT
+    current: keywords.DATE
   };
 
   /**

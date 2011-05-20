@@ -8,7 +8,18 @@ fast.modules.group.i18n = fast.modules.group.i18n || {
     WithoutProject: "Without project",
     New: "New",
     Done: "Done",
-    Waiting: "Waiting"
+    Waiting: "Waiting",
+    Date: "Date",
+    Today: "Today",
+    Tomorrow: "Tomorrow",
+    ThisWeek: "This week",
+    NextWeek: "Next week",
+    ThisMonth: "This month",
+    NextMonth: "Next month",
+    ThisYear: "This year",
+    NextYear: "Next year",
+    NextYears: "In the next years",
+    AnyTime: "Anytime",
   }, 
   de: {
     Grouping: "Gruppierung",
@@ -19,6 +30,17 @@ fast.modules.group.i18n = fast.modules.group.i18n || {
     WithoutProject: "Ohne Projekt",
     New: "Neu",
     Done: "Erledigt",
-    Waiting: "Warten"
+    Waiting: "Warten",
+    Date: "Datum",
+    Today: "Heute",
+    Tomorrow: "Morgen",
+    ThisWeek: "Nächste Woche",
+    NextWeek: "Diese Woche",
+    ThisMonth: "Diesen Monat",
+    NextMonth: "Nächsten Monat",
+    ThisYear: "Dieses Jahr",
+    NextYear: "Nächstes Jahr",
+    NextYears: "In den nächsten Jahren",
+    AnyTime: "Irgendwann",
   }  
 };
