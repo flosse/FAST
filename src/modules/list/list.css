@@ -1,14 +1,12 @@
 .list .group{
   padding: 0;
-  list-style: none;
   margin: 1em;
   border-radius: 0.5em;
   color: #555;
 }
 
-.list .group ul{
+.list .group div.items {
   padding: 0em;
-  list-style: none;
   margin: 1em;
 }
 
@@ -21,23 +19,25 @@
 	border-bottom: 1px solid #aaa;
 }
 
-.list li{
-  padding: 0.2em;
+.list div.item{
   cursor: pointer;
   border-radius: 0.4em;
-/*   padding: 0.4em; */
+	width: 230px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.list li.selected{
+.list div.item.selected{
   background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
   background: -moz-linear-gradient(top, #ddd, #ccc);
 }
 
-.list li:hover{
+.list div.item:hover{
   background: -webkit-gradient( linear, left top, left bottom, from(#f5fff7), to(#ddffe1));
   background: -moz-linear-gradient(top, #f5fff7, #ddffe1);
 }
-.list li button{
+.list div.item button{
   border: none;
   margin-left: 0.4em;
   width: 1.1em;
@@ -48,36 +48,36 @@
   background-size: 100% 100%;
 }
 
-.list li button.due{
+.list div.item button.due{
   background-image: url("img/due.svg");
   border: none;
 
 }
 
-.list li a.button {
+.list div.item a.button {
   margin-bottom: -0.2em;
 }
 
-.list li button.due:hover{
+.list div.item button.due:hover{
   background-image: url("img/due_hover.svg");
 }
 
-.list li button.done{
+.list div.item button.done{
   background-image: url("img/done.svg");
 }
 
-.list li button.done.done:hover{
+.list div.item button.done.done:hover{
 /*   background-image: url("img/undue.svg"); */
 }
 
-.list li.done a{
+.list div.item.done a{
   text-decoration: line-through;
 }
 
-.list li button.favorite{
+.list div.item button.favorite{
   background-image: url("img/fav.svg");
 }
-.list li button.favorite.active,
-.list li button.favorite:hover{
+.list div.item button.favorite.active,
+.list div.item button.favorite:hover{
   background-image: url("img/fav_hover.svg");
 }

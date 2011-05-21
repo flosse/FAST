@@ -1,14 +1,12 @@
 <div class="group">
   <h3>${title}</h3>
-  <ul>
+	<div class="items">
   {{each entries}} 
-    <li id="${id}" class="{{if (selected === id) }}selected {{/if}}{{if done }}done{{else}}due{{/if}}">
-      <div>
-	<button class="{{if done }}done{{else}}due{{/if}}"></button>
-	<button class="favorite {{if favorite }}active{{else}}inactive{{/if}}"></button>
-	<a href="#">${title}</a>
-      </div>
-    </li>
+    <div id="${id}" class="item {{if (selected === id) }}selected {{/if}}{{if done }}done{{else}}due{{/if}}">
+				<button class="{{if done }}done{{else}}due{{/if}}"></button>
+				<button class="favorite {{if favorite }}active{{else}}inactive{{/if}}"></button>
+				<a href="#">${title}</a>
+    </div>
   {{/each}}
-  </ul>
+	</div>
 </div>
