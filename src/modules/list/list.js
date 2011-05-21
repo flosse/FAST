@@ -222,7 +222,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     * Function: remove
     */
     var remove = function( ev ){
-      id = $(this).parent().parent().attr("id");
+      id = $(this).parent().attr("id");
       sb.publish( fast.events.DELETE, id );
     };
 
@@ -230,7 +230,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     * Function: done
     */
     var done = function( ev ){
-      id = $(this).parent().parent().attr("id");
+      id = $(this).parent().attr("id");
       sb.publish( fast.events.DONE, id );
     };
 
@@ -238,7 +238,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     * Function: undo
     */
     var undo = function( ev ){
-      id = $(this).parent().parent().attr("id");
+      id = $(this).parent().attr("id");
       sb.publish( fast.events.UNDO, id );
     };
 
@@ -246,7 +246,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     * Function: favDisable
     */
     var favDisable = function( ev ){
-      id = $(this).parent().parent().attr("id");
+      id = $(this).parent().attr("id");
       sb.publish( fast.events.UNFAVORED, id );
     };
 
@@ -254,7 +254,7 @@ fast.modules.list = fast.modules.list || (function( window, undefined ){
     * Function: favEnable
     */
     var favEnable = function( ev ){
-      id = $(this).parent().parent().attr("id");
+      id = $(this).parent().attr("id");
       sb.publish( fast.events.FAVORED, id );
     };
 
