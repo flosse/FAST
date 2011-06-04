@@ -25,7 +25,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     };
 
     /**
-     * Function: onSelection    
+     * Function: onSelection
      */
     var onSelection = function( id ){
       model.selected = [id];
@@ -36,25 +36,25 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: init
      */
     var init = function(){
-			model = sb.getModel("model");
-			model.subscribe( this );
-			view = new sb.getView("view")( sb, model );
-			view.init();
-			sb.subscribe( fast.events.CHANGED, onCollectionChanged );
-			sb.subscribe( fast.events.SELECT, onSelection );
+      model = sb.getModel("model");
+      model.subscribe( this );
+      view = new sb.getView("view")( sb, model );
+      view.init();
+      sb.subscribe( fast.events.CHANGED, onCollectionChanged );
+      sb.subscribe( fast.events.SELECT, onSelection );
     };
 
     /**
      * Function: destroy
      */
     var destroy = function(){
-			sb.unsubscribe( fast.events.CHANGED );
-			sb.unsubscribe( fast.events.SELECT );
-			model = null;
-			view.destroy();
-			view = null;
+      sb.unsubscribe( fast.events.CHANGED );
+      sb.unsubscribe( fast.events.SELECT );
+      model = null;
+      view.destroy();
+      view = null;
     };
-		
+
     // public API
     return ({
       init: init,
@@ -77,7 +77,7 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     var init = function( ){
 
       model.subscribe( this );
-			$.datepicker.regional[ scaleApp.i18n.getBrowserLanguage() ]; 
+      $.datepicker.regional[ scaleApp.i18n.getBrowserLanguage() ];
       c = sb.getContainer()
       tmpl = sb.getTemplate("detail");
       model.notify();
@@ -102,34 +102,34 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
 
     };
 
-		/**
-		 * Function: onFocusOut
-		 */
-		var onFocusOut = function( ev ){
-			model.focus = false;
-		};
+    /**
+     * Function: onFocusOut
+     */
+    var onFocusOut = function( ev ){
+      model.focus = false;
+    };
 
-		/**
-		 * Function: onFocusIn
-		 */
-		var onFocusIn = function( ev ){
-			model.focus = true;
-		};
+    /**
+     * Function: onFocusIn
+     */
+    var onFocusIn = function( ev ){
+      model.focus = true;
+    };
 
-		/**
-		 * Function: destroy
-		 */
-		var destroy = function(){
-			// nothing implemented yet
-		};
+    /**
+     * Function: destroy
+     */
+    var destroy = function(){
+      // nothing implemented yet
+    };
 
     /**
      * Function: remove
      */
     var remove = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.DELETE, getCurrent().id );
-				model.notify();
+        sb.publish( fast.events.DELETE, getCurrent().id );
+        model.notify();
       }
     };
 
@@ -138,8 +138,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var done = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.DONE, getCurrent().id );
-				model.notify();
+        sb.publish( fast.events.DONE, getCurrent().id );
+        model.notify();
       }
     };
 
@@ -148,8 +148,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var undo = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.UNDO, getCurrent().id );
-				model.notify();
+        sb.publish( fast.events.UNDO, getCurrent().id );
+        model.notify();
       }
     };
 
@@ -158,8 +158,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var disableFav = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.UNFAVORED, getCurrent().id );
-				model.notify();
+        sb.publish( fast.events.UNFAVORED, getCurrent().id );
+        model.notify();
       }
     };
 
@@ -168,8 +168,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var enableFav = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.FAVORED, getCurrent().id );
-				model.notify();
+        sb.publish( fast.events.FAVORED, getCurrent().id );
+        model.notify();
       }
     };
 
@@ -178,8 +178,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var disableWait = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.UNSET_WAIT, getCurrent().id );
-				model.notify();
+        sb.publish( fast.events.UNSET_WAIT, getCurrent().id );
+        model.notify();
       }
     };
 
@@ -188,8 +188,8 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     */
     var enableWait = function(){
       if( model.selected[0] ){
-				sb.publish( fast.events.SET_WAIT, getCurrent().id );
-				model.notify();
+        sb.publish( fast.events.SET_WAIT, getCurrent().id );
+        model.notify();
       }
     };
 
@@ -206,9 +206,9 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      */
     var getCtxtString = function( c ){
       if( c ){
-				if( c.length > 1 ){
-					return sb._("Contexts");
-				}
+        if( c.length > 1 ){
+          return sb._("Contexts");
+        }
       }
       return sb._("Context");
     };
@@ -217,145 +217,145 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
      * Function: onTitleChanged
      */
     var onTitleChanged = function( ev ){
-			if( ev.which === 27 ){
-				$(this).val( getCurrent().title ).blur();
-			}else{
-				var item = getCurrent();
-				item.title = $(this).val();
-				sb.publish( fast.events.UPDATE, item );
-			}
+      if( ev.which === 27 ){
+        $(this).val( getCurrent().title ).blur();
+      }else{
+        var item = getCurrent();
+        item.title = $(this).val();
+        sb.publish( fast.events.UPDATE, item );
+      }
     };
 
     /**
      * Function: onCtxtChanged
      */
     var onCtxtChanged = function( ev ){
-			if( ev.which === 27 ){
-				$(this).blur();
-			}else{
-				var item = getCurrent();
-				var a = $(this).val().split(',');
-				for( var j in a ){
-					a[j] = a[j].trim();
-				}
-				item.contexts = a;
-				sb.publish( fast.events.UPDATE, item );
-			}
+      if( ev.which === 27 ){
+        $(this).blur();
+      }else{
+        var item = getCurrent();
+        var a = $(this).val().split(',');
+        for( var j in a ){
+          a[j] = a[j].trim();
+        }
+        item.contexts = a;
+        sb.publish( fast.events.UPDATE, item );
+      }
     };
 
      /**
      * Function: onProjChanged
      */
     var onProjChanged = function( ev ){
-			if( ev.which === 27 ){
-				$(this).blur();
-			}
-			else{
-				var item = getCurrent();
-				var a = $(this).val().split(',');
-				for( var j in a ){
-					a[j] = a[j].trim();
-				 }
-				item.projects = a;
-				sb.publish( fast.events.UPDATE, item );
-			}
+      if( ev.which === 27 ){
+        $(this).blur();
+      }
+      else{
+        var item = getCurrent();
+        var a = $(this).val().split(',');
+        for( var j in a ){
+          a[j] = a[j].trim();
+         }
+        item.projects = a;
+        sb.publish( fast.events.UPDATE, item );
+      }
     };
 
     /**
      * Function: onNoteChanged
      */
     var onNoteChanged = function(){
-			var item = getCurrent();
-			item.note = $(this).val();
-			sb.publish( fast.events.UPDATE, item );
+      var item = getCurrent();
+      item.note = $(this).val();
+      sb.publish( fast.events.UPDATE, item );
     };
 
-		/**
-		 * Function: onDateChanged
-		 */
-		var onDateChanged = function( dateText, inst ){
-			var item = getCurrent();
-			var date = $(this).datepicker("getDate");
-			if( date ){
-				item.due = date.getTime();
-		  }else{
-				item.due = false;
-			}
+    /**
+     * Function: onDateChanged
+     */
+    var onDateChanged = function( dateText, inst ){
+      var item = getCurrent();
+      var date = $(this).datepicker("getDate");
+      if( date ){
+        item.due = date.getTime();
+      }else{
+        item.due = false;
+      }
       sb.publish( fast.events.UPDATE, item );
-		};
+    };
 
-		/**
-		 * Function: getCurrent
-		 */
-		var getCurrent = function(){
-			return model.entries[ model.selected[0] ];
-		};
+    /**
+     * Function: getCurrent
+     */
+    var getCurrent = function(){
+      return model.entries[ model.selected[0] ];
+    };
 
     /**
      * Function: update
      */
     var update = function(){
-			
+
       var item = {};
-      
-			if( !model.focus ){
-		
-				c.empty();
 
-				if( model.selected.length === 1 ){
-					item = model.entries[ model.selected[0] ] || item;
-				}
+      if( !model.focus ){
 
-				sb.tmpl( tmpl, {
-					label_delete: sb._("delete"),
-					title: sb._("Details"),
-					label_name: sb._("Name"),
-					name: item.title,
-					label_note: sb._("Note"),
-					label_contexts: getCtxtString( item.contexts ),
-					contexts: item.contexts,
-					label_projects: sb._("Projects"),
-					projects: item.projects,
-					label_new: sb._("New"),
-					isNew: trueFalseToYesNo( item.new ),
-					done: item.done,
-					due: item.due,
-					label_due: sb._("DueDate"),
-					label_clearDate: sb._("clearDate"),
-					note: item.note,
-					favorite: item.favorite,
-					wait: item.wait
-				}).appendTo( c );
+        c.empty();
 
-				c.find("textarea.note")
-					.autoGrow()
-					.focusout( update );
+        if( model.selected.length === 1 ){
+          item = model.entries[ model.selected[0] ] || item;
+        }
 
-				var due = c.find("input.duedate");
+        sb.tmpl( tmpl, {
+          label_delete: sb._("delete"),
+          title: sb._("Details"),
+          label_name: sb._("Name"),
+          name: item.title,
+          label_note: sb._("Note"),
+          label_contexts: getCtxtString( item.contexts ),
+          contexts: item.contexts,
+          label_projects: sb._("Projects"),
+          projects: item.projects,
+          label_new: sb._("New"),
+          isNew: trueFalseToYesNo( item.new ),
+          done: item.done,
+          due: item.due,
+          label_due: sb._("DueDate"),
+          label_clearDate: sb._("clearDate"),
+          note: item.note,
+          favorite: item.favorite,
+          wait: item.wait
+        }).appendTo( c );
 
-				due.datepicker({ 
-					onSelect: onDateChanged,
-				});
-				
-				if( item.due ){
-					due.datepicker("setDate", new Date(item.due) );
-				}
-	
-				c.find("button.clear-date").click(function(){
-						due.datepicker("setDate", null );
-						onDateChanged();
-				});
-			}
-		};
+        c.find("textarea.note")
+          .autoGrow()
+          .focusout( update );
 
-		// public API
-		return({
-			init: init,
-			update: update,
-			destroy: destroy
-		});
+        var due = c.find("input.duedate");
 
-	};
+        due.datepicker({
+          onSelect: onDateChanged,
+        });
+
+        if( item.due ){
+          due.datepicker("setDate", new Date(item.due) );
+        }
+
+        c.find("button.clear-date").click(function(){
+            due.datepicker("setDate", null );
+            onDateChanged();
+        });
+      }
+    };
+
+    // public API
+    return({
+      init: init,
+      update: update,
+      destroy: destroy
+    });
+
+  };
 
   /**
    * Class: detail.model
@@ -370,6 +370,6 @@ fast.modules.detail = fast.modules.detail || (function( window, undefined ){
     controller: controller,
     model: model,
     view: view,
-	});
+  });
 
 })( window );

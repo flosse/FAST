@@ -20,7 +20,7 @@ fast.modules.group.i18n = fast.modules.group.i18n || {
     NextYear: "Next year",
     NextYears: "In the next years",
     AnyTime: "Anytime",
-  }, 
+  },
   de: {
     Grouping: "Gruppierung",
     Project: "Projekt",
@@ -42,5 +42,5 @@ fast.modules.group.i18n = fast.modules.group.i18n || {
     NextYear: "Nächstes Jahr",
     NextYears: "In den nächsten Jahren",
     AnyTime: "Irgendwann",
-  }  
+  }
 };

@@ -8,260 +8,259 @@
  */
 fast.modules.group = fast.modules.group || (function( window, undefined ){
 
-	//container for keywords
-	var keywords = {
-		PROJECT: "PROJECT",
-		CONTEXT: "CONTEXT",
-		BOX: "BOX",
-		WITHOUT_CONTEXT: "WithoutContext",
-		WITHOUT_PROJECT: "WithoutProject",
-		NEW: "New",
-		DONE: "Done",
-		WAIT: "Waiting",
-		DATE: "Date",
-		TODAY: "Today",
-		TOMORROW: "Tomorrow",
-		THIS_WEEK: "ThisWeek",
-		NEXT_WEEK: "NextWeek",
-		THIS_MONTH: "ThisMonth",
-		NEXT_MONTH: "NextMonth",
-		THIS_YEAR: "ThisYear",
-		NEXT_YEARS: "NextYears",
-		ANY_TIME: "AnyTime",
-	};
+  //container for keywords
+  var keywords = {
+    PROJECT: "PROJECT",
+    CONTEXT: "CONTEXT",
+    BOX: "BOX",
+    WITHOUT_CONTEXT: "WithoutContext",
+    WITHOUT_PROJECT: "WithoutProject",
+    NEW: "New",
+    DONE: "Done",
+    WAIT: "Waiting",
+    DATE: "Date",
+    TODAY: "Today",
+    TOMORROW: "Tomorrow",
+    THIS_WEEK: "ThisWeek",
+    NEXT_WEEK: "NextWeek",
+    THIS_MONTH: "ThisMonth",
+    NEXT_MONTH: "NextMonth",
+    THIS_YEAR: "ThisYear",
+    NEXT_YEARS: "NextYears",
+    ANY_TIME: "AnyTime",
+  };
 
-	/**
-	 * Class: group.controller
-	 */
-	var controller = function( sb ){
+  /**
+   * Class: group.controller
+   */
+  var controller = function( sb ){
 
-		var model;
-		var view;
+    var model;
+    var view;
 
-		/**
-		 * Function: updateGroups
-		 */
-		var updateGroups = function( entries ){
-			model.entries = entries;
-			model.groups = {};
-			model.groups[ keywords.DATE ] = { name: sb._("Date"), count: countDateGroups( entries ) };
-			model.groups[ keywords.PROJECT ] = { name: sb._("Project"), count: countProjects( entries ) };
-			model.groups[ keywords.CONTEXT ] = { name: sb._("Context"), count: countContexts( entries ) };
-			model.groups[ keywords.BOX ] = { name: sb._("Box"), count: 3 };
-			model.notify();
-		};
+    /**
+     * Function: updateGroups
+     */
+    var updateGroups = function( entries ){
+      model.entries = entries;
+      model.groups = {};
+      model.groups[ keywords.DATE ] = { name: sb._("Date"), count: countDateGroups( entries ) };
+      model.groups[ keywords.PROJECT ] = { name: sb._("Project"), count: countProjects( entries ) };
+      model.groups[ keywords.CONTEXT ] = { name: sb._("Context"), count: countContexts( entries ) };
+      model.groups[ keywords.BOX ] = { name: sb._("Box"), count: 3 };
+      model.notify();
+    };
 
-		var updateGroupsForItem = function( item ){
+    var updateGroupsForItem = function( item ){
 
-			var oldItem = model.entries[ item.id ];
+      var oldItem = model.entries[ item.id ];
 
-			if( oldItem.projects.length !== item.projects.length ){
-				model.entries[ item.id ] = item;
-				model.groups[ keywords.PROJECT ] = { name: sb._("Project"), count: countProjects( model.entries ) };
-				model.notify();
-			}
-			if( oldItem.contexts.length !== item.contexts.length ){
-				model.entries[ item.id ] = item;
-				model.groups[ keywords.CONTEXT ] = { name: sb._("Context"), count: countContexts( model.entries ) };
-				model.notify();
-			}
-			if( oldItem.new !== item.new || oldItem.done !== item.done || oldItem.wait !== item.wait ){
-				model.entries[ item.id ] = item;
-				model.notify();
-			}
-		};
+      if( oldItem.projects.length !== item.projects.length ){
+        model.entries[ item.id ] = item;
+        model.groups[ keywords.PROJECT ] = { name: sb._("Project"), count: countProjects( model.entries ) };
+        model.notify();
+      }
+      if( oldItem.contexts.length !== item.contexts.length ){
+        model.entries[ item.id ] = item;
+        model.groups[ keywords.CONTEXT ] = { name: sb._("Context"), count: countContexts( model.entries ) };
+        model.notify();
+      }
+      if( oldItem.new !== item.new || oldItem.done !== item.done || oldItem.wait !== item.wait ){
+        model.entries[ item.id ] = item;
+        model.notify();
+      }
+    };
 
-		/**
-		 * Class: group
-		 */
-		var group = {
+    /**
+     * Class: group
+     */
+    var group = {
 
-			/**
-			* Function: byContext
-			*
-			* Returns an object with avaiable contexts and its items
-			*/
-			byStringArray: function( items, arrayName, emptyName ){
+      /**
+      * Function: byContext
+      *
+      * Returns an object with avaiable contexts and its items
+      */
+      byStringArray: function( items, arrayName, emptyName ){
 
-				var groups = { };
+        var groups = { };
 
-				groups[ emptyName ] = { };
+        groups[ emptyName ] = { };
 
-				$.each( items, function( j, item ){
+        $.each( items, function( j, item ){
 
-					var arr = $.map( item[ arrayName ], function( c ){
-						if( c.trim() !== "" ){ return c }
-					});
+          var arr = $.map( item[ arrayName ], function( c ){
+            if( c.trim() !== "" ){ return c }
+          });
 
-					if( arr.length > 0 ){
-						$.each( arr, function( k, content ){
+          if( arr.length > 0 ){
+            $.each( arr, function( k, content ){
 
-							if( !groups[ content ] ){ groups[ content ] = {}; }
-							groups[ content ][ j ] = j
+              if( !groups[ content ] ){ groups[ content ] = {}; }
+              groups[ content ][ j ] = j
 
-						});
-					}else{
-						groups[ emptyName ][ j ] = j;
-					}
+            });
+          }else{
+            groups[ emptyName ][ j ] = j;
+          }
 
-				});
+        });
 
-				return groups;
+        return groups;
 
-			},
+      },
 
-			byDate: function( items ){
+      byDate: function( items ){
 
-				var groups = { }
-				groups[	sb._( keywords.TODAY )		 ] =  dateFilter( items, null, 1 );
-				groups[	sb._( keywords.TOMORROW )	 ] =  dateFilter( items, 1,		 2 );
-				groups[	sb._( keywords.THIS_WEEK ) ] =  dateFilter( items, 2,		 7 );
-				groups[	sb._( keywords.NEXT_WEEK ) ] =  dateFilter( items, 7,		14 );
-				groups[	sb._( keywords.THIS_MONTH )] =  dateFilter( items, 14,	31 );
-				groups[	sb._( keywords.NEXT_MONTH )] =  dateFilter( items, 31,  62 );
-				groups[	sb._( keywords.THIS_YEAR ) ] =  dateFilter( items, 62, 365 );
-				groups[	sb._( keywords.NEXT_YEARS )] =  dateFilter( items, 365, null );
-				groups[	sb._( keywords.ANY_TIME )	 ] =  dateFilter( items, null, null );
-				
-				return groups;
-			},
+        var groups = { }
+        groups[ sb._( keywords.TODAY )     ] =  dateFilter( items, null, 1 );
+        groups[ sb._( keywords.TOMORROW )  ] =  dateFilter( items, 1,    2 );
+        groups[ sb._( keywords.THIS_WEEK ) ] =  dateFilter( items, 2,    7 );
+        groups[ sb._( keywords.NEXT_WEEK ) ] =  dateFilter( items, 7,   14 );
+        groups[ sb._( keywords.THIS_MONTH )] =  dateFilter( items, 14,  31 );
+        groups[ sb._( keywords.NEXT_MONTH )] =  dateFilter( items, 31,  62 );
+        groups[ sb._( keywords.THIS_YEAR ) ] =  dateFilter( items, 62, 365 );
+        groups[ sb._( keywords.NEXT_YEARS )] =  dateFilter( items, 365, null );
+        groups[ sb._( keywords.ANY_TIME )  ] =  dateFilter( items, null, null );
 
-			/**
-			* Function: byContext
-			*/
-			byContext: function( items ){
-			 return group.byStringArray( items, 'contexts', sb._( keywords.WITHOUT_CONTEXT ) )
-			},
+        return groups;
+      },
 
-			/**
-			* Function: byProject
-			*/
-			byProject: function( items ){
-			 return group.byStringArray( items, 'projects', sb._( keywords.WITHOUT_PROJECT ) )
-			},
+      /**
+      * Function: byContext
+      */
+      byContext: function( items ){
+       return group.byStringArray( items, 'contexts', sb._( keywords.WITHOUT_CONTEXT ) )
+      },
 
-			/**
-			* Function: byBox
-			*/
-			byBox: function( items ){
+      /**
+      * Function: byProject
+      */
+      byProject: function( items ){
+       return group.byStringArray( items, 'projects', sb._( keywords.WITHOUT_PROJECT ) )
+      },
 
-				groups = { };
-				groups[ sb._( keywords.NEW ) ] =  filterByBox( items, keywords.NEW );
-				groups[ sb._( keywords.DONE ) ] = filterByBox( items, keywords.DONE );
-				groups[ sb._( keywords.WAIT ) ] = filterByBox( items, keywords.WAIT );
-				return groups;
-			}
-		};
+      /**
+      * Function: byBox
+      */
+      byBox: function( items ){
 
-		var getDayRoundedDate = function( date ){
-			return new Date( date.getFullYear(), date.getMonth(), date.getDate() );
-		};
+        groups = { };
+        groups[ sb._( keywords.NEW ) ] =  filterByBox( items, keywords.NEW );
+        groups[ sb._( keywords.DONE ) ] = filterByBox( items, keywords.DONE );
+        groups[ sb._( keywords.WAIT ) ] = filterByBox( items, keywords.WAIT );
+        return groups;
+      }
+    };
 
-		var getNewDayRoundedDate = function( days ){
-			var now = getDayRoundedDate( new Date() );
-			return now.setDate( now.getDate() + days );
-		};
+    var getDayRoundedDate = function( date ){
+      return new Date( date.getFullYear(), date.getMonth(), date.getDate() );
+    };
 
-		var getEntriesForAnyTime = function( items ){
+    var getNewDayRoundedDate = function( days ){
+      var now = getDayRoundedDate( new Date() );
+      return now.setDate( now.getDate() + days );
+    };
 
-			var entries = {};
+    var getEntriesForAnyTime = function( items ){
 
-			for( var i in items ){
+      var entries = {};
 
-				var e = items[i];
-				if( !e.due ){
-					entries[ e.id ] = e.id;
-				}
-			}
+      for( var i in items ){
 
-			return entries;
+        var e = items[i];
+        if( !e.due ){
+          entries[ e.id ] = e.id;
+        }
+      }
 
-		};
+      return entries;
+
+    };
 
     var dateFilter = function( items, from, to ){
 
-			var min = from === null ? null : getNewDayRoundedDate( from );
-			var max = to === null		? null : getNewDayRoundedDate( to );
-			var anyTime = ( from === null && to === null );
+      var min = from === null ? null : getNewDayRoundedDate( from );
+      var max = to === null   ? null : getNewDayRoundedDate( to );
+      var anyTime = ( from === null && to === null );
 
-			var entries = { };
+      var entries = { };
 
-			if( anyTime ){
+      if( anyTime ){
 
-				for( var i in items ){
+        $.each( items, function( i, e ){
+          if( e ){
+            if( !e.due ){
+              entries[ e.id ] = e.id;
+            }
+          };
+        });
 
-					var e = items[i];
-					if( !e.due ){
-						entries[ e.id ] = e.id;
-					}
-				}
+        return entries;
+      }
 
-				return entries;
-			}
+      $.each( items, function( i, e ){
+        if( e ){
+          if( e.due ){
+            var due = new Date( e.due );
 
-			for( var i in items ){
+            if( min && max ){
+              if( min <= due && max > due ){
+                entries[ e.id ] = e.id;
+              }
+            }else{
+              if( max ){
+                if( max > due ) {
+                  entries[ e.id ] = e.id;
+                }
+              }
+              if( min ){
+                if( min <= due ) {
+                  entries[ e.id ] = e.id;
+                }
+              }
+            }
+          }
+        }
+      });
+      return entries;
+    };
 
-				var e = items[i];
+    /**
+     * Function: filterByBox
+     */
+    var filterByBox = function( items, box ){
 
-				if( e.due ){
-					var due = new Date( e.due );
+      var filter = function( items, cond ){
+        var entries = { };
+        $.each( items, function( i, item ){
+          if( cond( item ) ){
+            sb.debug( item );
+            entries[i] = item.id;
+          }
+        });
+        return entries;
+      }
 
-					if( min && max ){
-						if( min <= due && max > due ){
-							entries[ e.id ] = e.id;
-						}
-					}else{
-						if( max ){
-							if( max > due ) {
-								entries[ e.id ] = e.id;
-							}
-						}
-						if( min ){
-							if( min <= due ) {
-								entries[ e.id ] = e.id;
-							}
-						}
-					}
-				}
-			}
-			return entries;
-		};
+      switch( box ){
 
-		/**
-		 * Function: filterByBox
-		 */
-		var filterByBox = function( items, box ){
-
-			var filter = function( items, cond ){
-				var entries = { };
-				$.each( items, function( i, item ){
-					if( cond( item ) ){
-						sb.debug( item );
-						entries[i] = item.id;
-					}
-				});
-				return entries;
-			}
-
-			switch( box ){
-
-				case keywords.DONE:
-					return filter( items, function( item ){ return ( item.done != false ); });
-				case keywords.NEW:
-					return filter( items, function( item ){ return ( item.new === true ) });
-				case keywords.WAIT:
-					return filter( items, function( item ){ return ( item.wait === true ) });
-			}
-			return {};
-	};
+        case keywords.DONE:
+          return filter( items, function( item ){ return ( item.done != false ); });
+        case keywords.NEW:
+          return filter( items, function( item ){ return ( item.new === true ) });
+        case keywords.WAIT:
+          return filter( items, function( item ){ return ( item.wait === true ) });
+      }
+      return {};
+  };
 
     /**
      * Function: getContexts
      */
     var getContexts = function( items ){
-			return $.unique( $.map( items, function( item ){
-					return item.contexts;
-			}));
+      return $.unique( $.map( items, function( item ){
+          return item.contexts;
+      }));
     };
 
     /**
@@ -269,9 +268,9 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
      */
     var getProjects = function( items ){
 
-			return $.unique( $.map( items, function( item ){
-					return item.projects;
-			}));
+      return $.unique( $.map( items, function( item ){
+          return item.projects;
+      }));
     };
 
     /**
@@ -279,18 +278,18 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
      */
     var regroup = function(){
       switch( model.current ){
-				case keywords.DATE:
-					model.grouped = group.byDate( model.entries );
-					break;
-				case keywords.CONTEXT:
-					model.grouped = group.byContext( model.entries );
-					break;
-				case keywords.PROJECT:
-					model.grouped = group.byProject( model.entries );
-					break;
-				case keywords.BOX:
-					model.grouped = group.byBox( model.entries );
-					break;
+        case keywords.DATE:
+          model.grouped = group.byDate( model.entries );
+          break;
+        case keywords.CONTEXT:
+          model.grouped = group.byContext( model.entries );
+          break;
+        case keywords.PROJECT:
+          model.grouped = group.byProject( model.entries );
+          break;
+        case keywords.BOX:
+          model.grouped = group.byBox( model.entries );
+          break;
       }
     };
 
@@ -302,9 +301,9 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
       sb.publish( fast.events.GROUP, model.grouped );
     };
 
-		var countDateGroups = function( entries ){
+    var countDateGroups = function( entries ){
       return 0 // countByType( entries, '' );
-	 	};
+    };
 
     /**
     * Function: countProjects
@@ -327,13 +326,15 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
 
       var types = { }
 
-			$.each( entries, function( i, entry ){
-				if( entry[type] ){
-					$.each( entry[ type ], function( j, t ){
-						if( !types[ t ] ){ types[ t ] = t; }
-					});
-				}
-			});
+      $.each( entries, function( i, entry ){
+        if( entry ){
+          if( entry[type] ){
+            $.each( entry[ type ], function( j, t ){
+              if( !types[ t ] ){ types[ t ] = t; }
+            });
+          }
+        }
+      });
       return sb.count( types );
     };
 
@@ -341,19 +342,19 @@ fast.modules.group = fast.modules.group || (function( window, undefined ){
      * Function: init
      */
     var init = function(){
-			model = sb.getModel("model");
-			model.subscribe( this );
-			view = new sb.getView("view")();
-			view.init( sb, model );
-			sb.subscribe( fast.events.CHANGED, updateGroups );
-			sb.subscribe( fast.events.ITEM_CHANGED, updateGroupsForItem );
+      model = sb.getModel("model");
+      model.subscribe( this );
+      view = new sb.getView("view")();
+      view.init( sb, model );
+      sb.subscribe( fast.events.CHANGED, updateGroups );
+      sb.subscribe( fast.events.ITEM_CHANGED, updateGroupsForItem );
     };
 
     /**
      * Function: destroy
      */
     var destroy = function(){
-	// nothing yet
+  // nothing yet
     };
 
     //public API

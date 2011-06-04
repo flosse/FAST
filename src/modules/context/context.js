@@ -17,63 +17,65 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
   /**
    * Class: context.controller
    */
-	var controller = function( sb ){
+  var controller = function( sb ){
 
-		var model;
-		var view;
+    var model;
+    var view;
 
-		/**
-		* Function: updateCtxt
-		*/
-		var updateCtxt = function( entries ){
-			model.entries = entries;
-			model.contexts = {};
-			model.contexts[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) }
-			model.contexts[ keywords.NULL ] = { name: sb._("WithoutContext"), count: countContextless( entries ) }
-			$.extend( model.contexts, sortObject( getContexts( entries )) );
-			model.notify();
-		};
+    /**
+    * Function: updateCtxt
+    */
+    var updateCtxt = function( entries ){
+      model.entries = entries;
+      model.contexts = {};
+      model.contexts[ keywords.ALL ] = { name: sb._("All"), count: sb.count( entries ) }
+      model.contexts[ keywords.NULL ] = { name: sb._("WithoutContext"), count: countContextless( entries ) }
+      $.extend( model.contexts, sortObject( getContexts( entries )) );
+      model.notify();
+    };
 
-		var updateItemCtxt = function( item ){
+    var updateItemCtxt = function( item ){
 
-			var oldItem = model.entries[ item.id ];
+      var oldItem = model.entries[ item.id ];
 
-			if( contextChanged( oldItem.contexts, item.contexts ) ){
-				model.entries[ item.id ] = item
-				updateCtxt( model.entries );
-			}else{
-				model.entries[ item.id ] = item
-			}
-		};
+      if( contextChanged( oldItem.contexts, item.contexts ) ){
+        model.entries[ item.id ] = item
+        updateCtxt( model.entries );
+      }else{
+        model.entries[ item.id ] = item
+      }
+    };
 
-		var contextChanged = function( a, b ){
-			if( a.length !== b.length ){
-				return true;
-			}else{
-				var x = a.sort();
-				var y = b.sort();
-				for( var i = 0; b[i]; i++ ){
-					if( x[i] !== y[i] ){
-						return true;
-					}
-				}
-			}
-			return false
-		};
+    var contextChanged = function( a, b ){
+      if( a.length !== b.length ){
+        return true;
+      }else{
+        var x = a.sort();
+        var y = b.sort();
+        for( var i = 0; b[i]; i++ ){
+          if( x[i] !== y[i] ){
+            return true;
+          }
+        }
+      }
+      return false
+    };
 
     /**
     * Function: countContextless
     */
     var countContextless = function( entries ){
       var count = 0;
-      for( var i in entries ){
-	if( !entries[i].contexts ){
-	  count++;
-	}
-	else if( entries[i].contexts.length < 1 ){
-	  count++;
-	}
-      }
+      $.each( entries, function( i, entry ){
+        if( entry ){
+          if( !entry.contexts ){
+            count++;
+          }
+          else if( entry.contexts.length < 1 ){
+            count++;
+          }
+        }
+      });
       return count;
     };
 
@@ -85,39 +87,39 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
       var entries = { };
 
       if( ctxt === keywords.ALL ){
-	// copy items
-	for( var i in items ){
-	  entries[ i ] = items[i].id;
-	}
-	return entries;
+        // copy items
+        for( var i in items ){
+          if( items[i] ){
+            entries[ i ] = items[i].id;
+          }
+        }
+        return entries;
       }
       if( ctxt === keywords.NULL ){
-	ctxt = null;
+        ctxt = null;
       }
 
-      for( var i in items ){
+      $.each( items, function( i, item ){
 
-	var item = items[i];
+        if( item ){
 
-	if( item ){
+          if( !item.contexts ){
+            item.contexts = [];
+          }
+          var contexts = item.contexts;
 
-	  if( !item.contexts ){
-	    item.contexts = [];
-	  }
-	  var contexts = item.contexts;
-
-	  if( !ctxt && contexts.length < 1 ){
-	    entries[ item.id ] = item.id;
-	  }
-	  else if( ctxt && contexts.length > 0 ){
-	    for( var j in contexts ){
-	      if( contexts[j].toLowerCase() === ctxt.toLowerCase() ){
-		entries[ item.id ] = item.id;
-	      }
-	    }
-	  }
-	}
-      }
+          if( !ctxt && contexts.length < 1 ){
+            entries[ item.id ] = item.id;
+          }
+          else if( ctxt && contexts.length > 0 ){
+            for( var j in contexts ){
+              if( contexts[j].toLowerCase() === ctxt.toLowerCase() ){
+                entries[ item.id ] = item.id;
+              }
+            }
+          }
+        }
+      });
       return entries;
     };
 
@@ -126,8 +128,8 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     */
     var update = function(){
       sb.publish( fast.events.MASK, {
-				id:"context",
-				mask: filterByContext( model.entries, model.current )
+        id:"context",
+        mask: filterByContext( model.entries, model.current )
       });
     };
 
@@ -140,15 +142,15 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
       key, a = [];
 
       for( key in o ){
-	if( o.hasOwnProperty( key ) ){
-	  a.push( key );
-	}
+        if( o.hasOwnProperty( key ) ){
+          a.push( key );
+        }
       }
 
       a.sort();
 
       for( key = 0; key < a.length; key++ ){
-	sorted[ a[key] ] = o[ a[key] ];
+        sorted[ a[key] ] = o[ a[key] ];
       }
       return sorted;
     };
@@ -161,23 +163,23 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
       var contexts = {};
       var contextArray = [];
 
-      for( var i in items ){
-				var item = items[i];
+      $.each( items, function( i, item ){
+        if( item ){
+          if( item.contexts ){
 
-				if( item.contexts ){
+            for( var j in item.contexts ){
 
-					for( var j in item.contexts ){
+              var cntxt = item.contexts[j].trim();
 
-						var cntxt = item.contexts[j].trim();
-
-						if( !contexts[ cntxt ] && cntxt !== ""){
-							contexts[ cntxt ] = { name: cntxt, count: 1 };
-						}else if( contexts[ cntxt ] && cntxt !== ""){
-							contexts[ cntxt ].count++;
-						}
-					}
-				}
-      }
+              if( !contexts[ cntxt ] && cntxt !== ""){
+                contexts[ cntxt ] = { name: cntxt, count: 1 };
+              }else if( contexts[ cntxt ] && cntxt !== ""){
+                contexts[ cntxt ].count++;
+              }
+            }
+          }
+        }
+      });
       return contexts;
     };
 
@@ -234,15 +236,16 @@ fast.modules.context = fast.modules.context || (function( window, undefined ){
     */
     var init = function( s, m ){
 
-	sb = s;
-	mode = m;
-	model = m;
-	model.subscribe( this );
-	sb = s;
-	c = sb.getContainer()
-	tmpl = sb.getTemplate("list");
-	c.delegate("li", "click", setContext );
-	model.notify();
+      sb = s;
+      mode = m;
+      model = m;
+      model.subscribe( this );
+      sb = s;
+      c = sb.getContainer()
+      tmpl = sb.getTemplate("list");
+      c.delegate("li", "click", setContext );
+      model.notify();
+
     };
 
     /**

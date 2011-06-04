@@ -29,10 +29,10 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
     /**
      * Function: parse
      * Parses the command string and creates an object with all parsed properties.
-     * 
+     *
      * Parameters:
      * (String) cmd - command
-     * 
+     *
      * Returns:
      * Object with parsed properties.
      */
@@ -40,33 +40,33 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
 
       var inputArray = cmd.split( keywords.meta );
       var e = { title: inputArray[0] };
-	
+
       for( var i = 1; i < inputArray.length; i++ ){
 
-	  var metaData = inputArray[i];
-	  var keyChar = metaData[0];
-	  var term = metaData.substr(1);
-	  var termArray = term.split(',');
+        var metaData = inputArray[i];
+        var keyChar = metaData[0];
+        var term = metaData.substr(1);
+        var termArray = term.split(',');
 
-	  for( var j in termArray ){
-	    termArray[j] = termArray[j].trim();
-	  }
+        for( var j in termArray ){
+          termArray[j] = termArray[j].trim();
+        }
 
-	  switch( keyChar ){
+        switch( keyChar ){
 
-	    case keywords.context:
-	      e.contexts = termArray;
-	      break;
-	    case keywords.project:
-	      e.projects = termArray;
-	      break;
-	    case keywords.note:
-	      e.note = term;
-	      break;
-	    case keywords.favorite:
-	      e.favorite = true;
-	      break;
-	  }
+          case keywords.context:
+            e.contexts = termArray;
+            break;
+          case keywords.project:
+            e.projects = termArray;
+            break;
+          case keywords.note:
+            e.note = term;
+            break;
+          case keywords.favorite:
+            e.favorite = true;
+            break;
+        }
       }
       return e;
     };
@@ -85,15 +85,20 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
      */
     var update = function( ev ){
 
-      if( model.enterPressed === true ){
-	if( model.cmd.trim() !== ''){
-	  var e = parse( model.cmd.trim() );
-	  sb.publish( fast.events.CREATE , e );
-	  resetModel();
-	}
+     if( model.cmd[0] === keywords.search && model.cmd.length > 1 ){
+       sb.publish( fast.events.SEARCH, model.cmd.substr(1) );
+     }else if( model.enterPressed === true ){
+        if( model.cmd.trim() !== ''){
+          var e = parse( model.cmd.trim() );
+          sb.publish( fast.events.CREATE , e );
+          resetModel();
+        }
       }else{
-	sb.publish( "cli", model.cmd );
+        if( model.cmd.length === 0 ){
+          sb.publish( fast.events.SEARCH, '' );
+        }
       }
+      sb.publish( fast.events.CLI, model.cmd );
     };
 
     /**
@@ -143,61 +148,45 @@ fast.modules.cli = fast.modules.cli || (function( window, undefined ){
     var sb;
 
     /**
-     * Function: update
-     */
-    var update = function( ev ){
-      cli.val( model.cmd );
-    };
-
-    /**
      * Function: onKeyUp
      */
     var onKeyUp = function( ev ){
 
-      model.cmd = $(this).val();
+      model.cmd = cli.val();
 
-      if( model.cmd[0] === keywords.search && model.cmd.length > 1 ){
-	      sb.publish( fast.events.SEARCH, model.cmd.substr(1) );
-      }else{
-	
-	sb.publish( fast.events.SEARCH, '' );
-	
-	switch( ev.which ){
+      switch( ev.which ){
 
-	  case 27: // on escape
-	    model.cmd = '';
+        case 27: // on escape
+          model.cmd = '';
+          cli.val('');
+          break;
 
-	    model.notify();	
-	    break;
-
-	  case 13: // on enter
-	    model.enterPressed = true;
-	    model.notify();
-	    break;
-	}
+        case 13: // on enter
+          model.enterPressed = true;
+          cli.val('');
+          break;
       }
+
+      model.notify();
     };
 
     /**
      * Function: init
      */
     var init = function( s, m ){
-	
-	sb = s;
-	model = m;
-	cli = sb.tmpl("cli", {} );
-	
-	model.subscribe( this );
-	
-	cli.appendTo( sb.getContainer() );
-	cli.attr("placeholder", sb._("placeholder"));
-	cli.keyup( onKeyUp );
-	
+
+      sb = s;
+      model = m;
+      cli = sb.tmpl("cli", {} );
+
+      cli.appendTo( sb.getContainer() );
+      cli.attr("placeholder", sb._("placeholder"));
+      cli.keyup( onKeyUp );
+
     };
 
-    return ({ 
-      init: init, 
-      update: update
+    return ({
+      init: init,
     });
 
   };

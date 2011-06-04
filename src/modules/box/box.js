@@ -31,7 +31,7 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     var updateBoxes = function( entries ){
       model.entries = entries;
       model.boxes = {};
-			model.boxes[ keywords.ALL ] = { name: sb._("All"), count: sb.count( filterByBox( entries, keywords.ALL ) ) };
+      model.boxes[ keywords.ALL ] = { name: sb._("All"), count: sb.count( filterByBox( entries, keywords.ALL ) ) };
       model.boxes[ keywords.NEW ] = { name: sb._("New"), count: countNew( entries ) };
       model.boxes[ keywords.WAITING ] = { name: sb._("Waiting"), count: countWaiting( entries ) };
       model.boxes[ keywords.DONE ] = { name: sb._("Done"), count: countDone( entries ) };
@@ -40,23 +40,23 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
 
     var updateItem = function( item ){
 
-			var oldItem = model.entries[ item.id ];
+      var oldItem = model.entries[ item.id ];
 
-			if( oldItem.due !== item.due ){
-				model.entries[ item.id ] = item;
-				model.boxes[ keywords.DONE ] = { name: sb._("Done"), count: countDone( model.entries ) };
-				model.notify();
-			}
-			else if( oldItem.new !== item.new ){
-				model.entries[ item.id ] = item;
-				model.boxes[ keywords.NEW ] = { name: sb._("New"), count: countNew( model.entries ) };
-				model.notify();
-			}
-			else if( oldItem.wait !== item.wait ){
-				model.entries[ item.id ] = item;
-				model.boxes[ keywords.WAITING ] = { name: sb._("Waiting"), count: countWaiting( model.entries ) };
-			  model.notify();
-			}
+      if( oldItem.due !== item.due ){
+        model.entries[ item.id ] = item;
+        model.boxes[ keywords.DONE ] = { name: sb._("Done"), count: countDone( model.entries ) };
+        model.notify();
+      }
+      else if( oldItem.new !== item.new ){
+        model.entries[ item.id ] = item;
+        model.boxes[ keywords.NEW ] = { name: sb._("New"), count: countNew( model.entries ) };
+        model.notify();
+      }
+      else if( oldItem.wait !== item.wait ){
+        model.entries[ item.id ] = item;
+        model.boxes[ keywords.WAITING ] = { name: sb._("Waiting"), count: countWaiting( model.entries ) };
+        model.notify();
+      }
     };
 
     /**
@@ -64,8 +64,8 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
      */
     var update = function(){
       sb.publish( fast.events.MASK, {
-				id: "box",
-				mask: filterByBox( model.entries, model.current)
+        id: "box",
+        mask: filterByBox( model.entries, model.current)
       });
     };
 
@@ -74,45 +74,46 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     */
     var filterByBox = function( items, box ){
 
-			var filter = function( items, cond ){
-				var entries = { };
-				$.each( items, function( i, item ){
-					if( cond( item ) ){ entries[i] = item; }
-				});
-				return entries;
-			};
+      var filter = function( items, cond ){
+        var entries = { };
+        $.each( items, function( i, item ){
+          if( cond( item ) ){ entries[i] = item; }
+        });
+        return entries;
+      };
 
-			var reduce = function( items ){
-				var entries = { };
-				$.each( items, function( i, item ){
-					 entries[i] = i;
-				});
-				return entries;
-			};
+      var reduce = function( items ){
+        var entries = { };
+        $.each( items, function( i, item ){
+           entries[i] = i;
+        });
+        return entries;
+      };
 
-			var delta = 86400000; 
+      var delta = 86400000;
 
-			var doneFilter = function( item ){
-				if( typeof item.done === "number" ){
-					if( item.done < (new Date).getTime() - delta ){
-						return false;
-					}
-				}else if( item.done === true ){
-					return false;
-				}
-				return true;
-			};
+      var doneFilter = function( item ){
+        if( !item ){ return false }
+        if( typeof item.done === "number" ){
+          if( item.done < (new Date).getTime() - delta ){
+            return false;
+          }
+        }else if( item.done === true ){
+          return false;
+        }
+        return true;
+      };
 
       switch( box ){
 
-				case "ALL":
-					return reduce( filter( items, doneFilter ) );
-				case "DONE":
-					return reduce( filter( items, function( item ){ return ( item.done !== false ); } ));
-				case "NEW":
-					return reduce( filter( items, function( item ){ return ( item.new === true ); } ));
-				case "WAITING":
-					return reduce( filter( filter( items, function( item ){ return ( item.wait === true ); } ), doneFilter ));
+        case "ALL":
+          return reduce( filter( items, doneFilter ) );
+        case "DONE":
+          return reduce( filter( items, function( item ){ return ( item.done !== false ); } ));
+        case "NEW":
+          return reduce( filter( items, function( item ){ return ( item.new === true ); } ));
+        case "WAITING":
+          return reduce( filter( filter( items, function( item ){ return ( item.wait === true ); } ), doneFilter ));
 
       }
 
@@ -124,14 +125,16 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     */
     var countNew = function( entries ){
       var count = 0;
-      for( var i in entries ){
-				if( entries[i].new === undefined ){
-					count++;
-				}
-				else if( entries[i].new === true ){
-					count++;
-				}
-      }
+      $.each( entries, function( i, entry ){
+        if( entry ){
+          if( entry.new === undefined ){
+            count++;
+          }
+          else if( entry.new === true ){
+            count++;
+          }
+        }
+      });
       return count;
     };
 
@@ -140,11 +143,13 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     */
     var countDone = function( entries ){
       var count = 0;
-      for( var i in entries ){
-				if( entries[i].done !== false ){
-					count++;
-				}
-      }
+      $.each( entries, function( i, entry ){
+        if( entry ){
+          if( entry.done !== false ){
+            count++;
+          }
+        }
+      });
       return count;
     };
     /**
@@ -152,11 +157,13 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
     */
     var countWaiting = function( entries ){
       var count = 0;
-      for( var i in entries ){
-				if( entries[i].wait === true ){
-					count++;
-				}
-      }
+      $.each( entries, function( i, entry ){
+        if( entry ){
+          if( entry.wait === true ){
+            count++;
+          }
+        }
+      });
       return count;
     };
 
@@ -164,19 +171,19 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
      * Function: init
      */
     var init = function(){
-			model = sb.getModel("model");
-			model.subscribe( this );
-			view = new sb.getView("view")();
-			view.init( sb, model );
-			sb.subscribe( fast.events.CHANGED, updateBoxes );
-			sb.subscribe( fast.events.ITEM_CHANGED, updateItem );
+      model = sb.getModel("model");
+      model.subscribe( this );
+      view = new sb.getView("view")();
+      view.init( sb, model );
+      sb.subscribe( fast.events.CHANGED, updateBoxes );
+      sb.subscribe( fast.events.ITEM_CHANGED, updateItem );
     };
 
     /**
      * Function: destroy
      */
     var destroy = function(){
-	// nothing yet
+  // nothing yet
     };
 
     //public API
@@ -223,24 +230,24 @@ fast.modules.box = fast.modules.box || (function( window, undefined ){
       model.notify();
     };
 
-		/**
-		* Function: update
-		*/
-		var update = function(){
-			c.empty();
-			sb.tmpl( tmpl, {
-				title: sb._("Box"),
-				boxes: model.boxes,
-				current: model.current
-			}).appendTo( c );
-		};
+    /**
+    * Function: update
+    */
+    var update = function(){
+      c.empty();
+      sb.tmpl( tmpl, {
+        title: sb._("Box"),
+        boxes: model.boxes,
+        current: model.current
+      }).appendTo( c );
+    };
 
-		//public API
-		return({
-			init: init,
-			update: update
-		});
-	};
+    //public API
+    return({
+      init: init,
+      update: update
+    });
+  };
 
   //public modules
   return({

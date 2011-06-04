@@ -17,16 +17,35 @@
   font-size: 0.8em;
 }
 
+.detail .property{
+  padding: 0.4em;
+}
+
 .detail .toolbar{
   background: -webkit-gradient( linear, left top, left bottom, from(#eee), to(#ddd));
   background: -moz-linear-gradient(top, #eee, #ddd);
   padding: 0.4em;
 }
 
-.detail .toolbar label{
+.detail .property label{
 	width: 6em;
 	display: inline-block;
 	text-align: right;
+}
+
+.detail .property input:focus,
+.detail .property input:hover{
+	cursor: text;
+	border-bottom: 1px solid #ccc;
+	background: transparent;
+}
+
+.detail .property input,
+.detail .property input:disabled,
+.detail .property input:disabled:hover{
+	border:none;
+	background: transparent;
+	cursor: default;
 }
 
 .detail textarea{
@@ -39,7 +58,6 @@
 }
 
 .detail textarea:focus{
-  border-color: #aaa;
   background: #fff;
 }
 

@@ -36,44 +36,46 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
 
     var updateProjectForItem = function( item ){
 
-			var oldItem = model.entries[ item.id ];
+      var oldItem = model.entries[ item.id ];
 
-			if( projectChanged( oldItem.projects, item.projects ) ){
-				model.entries[ item.id ] = item;
-				updateProject( model.entries );
-			}else{
-				model.entries[ item.id ] = item;
-			}
+      if( projectChanged( oldItem.projects, item.projects ) ){
+        model.entries[ item.id ] = item;
+        updateProject( model.entries );
+      }else{
+        model.entries[ item.id ] = item;
+      }
     };
 
-		var projectChanged = function( a, b ){
-			if( a.length !== b.length ){
-				return true;
-			}else{
-				var x = a.sort();
-				var y = b.sort();
-				for( var i = 0; b[i]; i++ ){
-					if( x[i] !== y[i] ){
-						return true;
-					}
-				}
-			}
-			return false
-		};
+    var projectChanged = function( a, b ){
+      if( a.length !== b.length ){
+        return true;
+      }else{
+        var x = a.sort();
+        var y = b.sort();
+        for( var i = 0; b[i]; i++ ){
+          if( x[i] !== y[i] ){
+            return true;
+          }
+        }
+      }
+      return false
+    };
 
     /**
     * Function: countProjectless
     */
     var countProjectless = function( entries ){
       var count = 0;
-      for( var i in entries ){
-	if( !entries[i].projects ){
-	  count++;
-	}
-	else if( entries[i].projects.length < 1 ){
-	  count++;
-	}
-      }
+      $.each( entries, function( i, entry ){
+        if( entry ){
+          if( !entry.projects ){
+            count++;
+          }
+          else if( entry.projects.length < 1 ){
+            count++;
+          }
+        }
+      });
       return count;
     };
 
@@ -93,15 +95,15 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
       key, a = [];
 
       for( key in o ){
-	if( o.hasOwnProperty( key ) ){
-	  a.push( key );
-	}
+        if( o.hasOwnProperty( key ) ){
+          a.push( key );
+        }
       }
 
       a.sort();
 
       for( key = 0; key < a.length; key++ ){
-	sorted[ a[key] ] = o[ a[key] ];
+        sorted[ a[key] ] = o[ a[key] ];
       }
       return sorted;
     }
@@ -114,23 +116,23 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
       var projects = {};
       var projectArray = [];
 
-      for( var i in items ){
-	var item = items[i];
+      $.each( items, function( i, item ){
+        if( item ){
+          if( item.projects ){
 
-	if( item.projects ){
+            for( var j in item.projects ){
 
-	  for( var j in item.projects ){
+              var proj = item.projects[j].trim();
 
-	    var proj = item.projects[j].trim();
-
-	    if( !projects[ proj ] && proj !== ""){
-	      projects[ proj ] = { name: proj, count: 1 };
-	    }else if( projects[ proj ] && proj !== ""){
-	      projects[ proj ].count++;
-	    }
-	  }
-	}
-      }
+              if( !projects[ proj ] && proj !== ""){
+                projects[ proj ] = { name: proj, count: 1 };
+              }else if( projects[ proj ] && proj !== ""){
+                projects[ proj ].count++;
+              }
+            }
+          }
+        }
+      });
       return projects;
     };
 
@@ -142,38 +144,40 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
       var entries = {};
 
       if( proj === keywords.ALL ){
-	// copy items
-	for( var i in items ){
-	  entries[ i ] = items[i].id;
-	}
-	return entries;
+        // copy items
+        for( var i in items ){
+          if( items[i] ){
+            entries[ i ] = items[i].id;
+          }
+        }
+        return entries;
       }
       if( proj === keywords.NULL ){
-	proj = null;
+        proj = null;
       }
 
       for( var i in items ){
 
-	var item = items[i];
+        var item = items[i];
 
-	if( item ){
+        if( item ){
 
-	  if( !item.projects ){
-	    item.projects = [];
-	  }
-	  var projects = item.projects;
+          if( !item.projects ){
+            item.projects = [];
+          }
+          var projects = item.projects;
 
-	  if( !proj && projects.length < 1 ){
-	    entries[ item.id ] = item.id;
-	  }
-	  else if( proj && projects.length > 0 ){
-	    for( var j in projects ){
-	      if( projects[j].toLowerCase() === proj.toLowerCase() ){
-		entries[ item.id ] = item.id;
-	      }
-	    }
-	  }
-	}
+          if( !proj && projects.length < 1 ){
+            entries[ item.id ] = item.id;
+          }
+          else if( proj && projects.length > 0 ){
+            for( var j in projects ){
+              if( projects[j].toLowerCase() === proj.toLowerCase() ){
+                entries[ item.id ] = item.id;
+              }
+            }
+          }
+        }
       }
       return entries;
     };
@@ -230,15 +234,16 @@ fast.modules.project = fast.modules.project || (function( window, undefined ){
     */
     var init = function( s, m ){
 
-	sb = s;
-	mode = m;
-	model = m;
-	model.subscribe( this );
-	sb = s;
-	c = sb.getContainer()
-	tmpl = sb.getTemplate("list");
-	c.delegate("li", "click", setProject );
-	model.notify();
+      sb = s;
+      mode = m;
+      model = m;
+      model.subscribe( this );
+      sb = s;
+      c = sb.getContainer()
+      tmpl = sb.getTemplate("list");
+      c.delegate("li", "click", setProject );
+      model.notify();
+
     };
 
     /**
