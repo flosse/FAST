@@ -1,0 +1,83 @@
+.list .group{
+  padding: 0;
+  margin: 1em;
+  border-radius: 0.5em;
+  color: #555;
+}
+
+.list .group div.items {
+  padding: 0em;
+  margin: 1em;
+}
+
+.list .group h3{
+	font-size: 0.9em;
+	text-align: left;
+	color: #888;
+	padding: 0.2em;
+	margin:0;
+	border-bottom: 1px solid #aaa;
+}
+
+.list div.item{
+  cursor: pointer;
+  border-radius: 0.4em;
+	width: 230px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.list div.item.selected{
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
+  background: -moz-linear-gradient(top, #ddd, #ccc);
+}
+
+.list div.item:hover{
+  background: -webkit-gradient( linear, left top, left bottom, from(#f5fff7), to(#ddffe1));
+  background: -moz-linear-gradient(top, #f5fff7, #ddffe1);
+}
+.list div.item button{
+  border: none;
+  margin-left: 0.4em;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.4em;
+  margin-bottom: -0.2em;
+  background: transparent;
+  background-size: 100% 100%;
+}
+
+.list div.item button.due{
+  background-image: url("img/due.svg");
+  border: none;
+
+}
+
+.list div.item a.button {
+  margin-bottom: -0.2em;
+}
+
+.list div.item button.due:hover{
+  background-image: url("img/due_hover.svg");
+}
+
+.list div.item button.done{
+  background-image: url("img/done.svg");
+}
+
+.list div.item button.done.done:hover{
+/*   background-image: url("img/undue.svg"); */
+}
+
+.list div.item.done a{
+  text-decoration: line-through;
+}
+
+.list div.item button.favorite{
+  background-image: url("img/fav.svg");
+}
+.list div.item button.favorite.active,
+.list div.item button.favorite:hover{
+  background-image: url("img/fav_hover.svg");
+}

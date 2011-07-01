@@ -1,0 +1,7 @@
+<h3>${title}</h3>
+<ul>
+  {{each groups}}
+  <li data-group="${$index}" {{if ($index === current) }} class="current" {{/if}}>
+    <a href="#">${name}<span>(${count})</span></a></li>
+  {{/each}}
+</ul>

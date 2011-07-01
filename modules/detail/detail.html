@@ -1,0 +1,29 @@
+<h3>
+  {{if name}}
+    <input type="text" value="${name}" class="name"/>
+  {{else}}
+    ${title}
+  {{/if}}
+</h3>
+<div class="toolbar">
+  <button class="{{if done}}done{{else}}due{{/if}}" {{if !name}}disabled{{/if}}></button>
+  <button class="favorite {{if favorite}}active{{else}}inactive{{/if}}" {{if !name}}disabled{{/if}}></button>
+  <button class="wait {{if wait}}active{{else}}inactive{{/if}}" {{if !name}}disabled{{/if}}></button>
+  <button class="delete" {{if !name}}disabled{{/if}}></button>
+</div>
+<div class="property">
+  <label>${label_contexts}:</label>
+  <input type="text" class="contexts" value="{{each contexts}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}" {{if !name}}disabled{{/if}}/>
+</div>
+<div class="property">
+  <label>${label_projects}:</label>
+  <input type="text" class="projects" value="{{each projects}}{{if ( $index > 0 ) }}, {{/if}}${$value}{{/each}}" {{if !name}}disabled{{/if}}/>
+</div>
+<div class="property">
+  <label>${label_due}:</label>
+  <input class="duedate" {{if !name}}disabled{{/if}} size="10" />
+  {{if name && typeof due === "number" }}
+  <button class="clear-date">${label_clearDate}</button>
+  {{/if}}
+</div>
+<textarea class="note" cols="40" rows="5" {{if !name}}disabled{{/if}} >${note}</textarea>

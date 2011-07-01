@@ -1,0 +1,59 @@
+.list li{
+  padding: 0.2em;
+  cursor: pointer;
+  border-radius: 0.4em;
+}
+
+.list li.selected{
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
+  background: -moz-linear-gradient(top, #ddd, #ccc);
+}
+
+.list li:hover{
+  background: -webkit-gradient( linear, left top, left bottom, from(#f5fff7), to(#ddffe1));
+  background: -moz-linear-gradient(top, #f5fff7, #ddffe1);
+}
+.list li button{
+  border: none;
+  margin-left: 0.4em;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.4em;
+  margin-bottom: -0.2em;
+  background: transparent;
+  background-size: 100% 100%;
+}
+
+.list li button.due{
+  background-image: url("img/due.svg");
+  border: none;
+
+}
+
+.list li a.button {
+  margin-bottom: -0.2em;
+}
+
+.list li button.due:hover{
+  background-image: url("img/due_hover.svg");
+}
+
+.list li button.done{
+  background-image: url("img/done.svg");
+}
+
+.list li button.done.done:hover{
+/* background-image: url("img/undue.svg"); */
+}
+
+.list li.done a{
+  text-decoration: line-through;
+}
+
+.list li button.favorite{
+  background-image: url("img/fav.svg");
+}
+.list li button.favorite.active,
+.list li button.favorite:hover{
+  background-image: url("img/fav_hover.svg");
+}

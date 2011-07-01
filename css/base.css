@@ -1,0 +1,168 @@
+html{
+  
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  background: #f7f7f7;
+  font-family: sans-serif;
+}
+
+a{
+  text-decoration: none;
+  color: #555;
+}
+
+input{
+  border: 1px solid gray;
+  border-radius: 0.4em;
+  -moz-border-radius: 0.4em;
+  padding: 0.4em;
+  background: -webkit-gradient( linear, left top, left bottom, from(#bbb), to(#eee));
+  background: -moz-linear-gradient(top, #bbb, #eee);
+  margin: 0.3em;
+  color: #444;
+}
+
+input:focus{  
+  outline: none;
+  -webkit-box-shadow: rgba(255, 0, 0, 0.7) 0px 0px 8px;
+  -moz-box-shadow: rgba(255, 0, 0, 0.7) 0px 0px 8px;
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#fff));
+  background: -moz-linear-gradient(top, #ddd, #fff);
+}  
+
+button{
+  cursor: pointer;    
+}
+
+.banner{
+  padding: 0.8em;
+  background: -webkit-gradient( linear, left top, left bottom, from(#666), to(#222));
+  background: -moz-linear-gradient(top, #666, #222); 
+  box-shadow: 0px 5px 5px rgba(0,0,0,0.4);
+}
+
+.content{    
+  display:-webkit-box;
+  display:-moz-box;
+  display: box;
+  -webkit-box-orient:horizontal;
+  -moz-box-orient:horizontal;  
+  margin-top:1em;
+  width: 98%;
+}
+
+.content article{
+ -webkit-box-flex: 10; 
+ -moz-box-flex: 10; 
+ min-width: 22em;
+}
+
+.content aside{
+
+}
+
+.content aside.left{
+  min-width: 200px;
+}
+
+.content aside.right{
+  min-width: 300px;
+}
+
+.widget{  
+  margin: 1em;  
+  border-radius: 0.6em;
+  background: -webkit-gradient( linear, left top, left bottom, from(#f7f7f7), to(#ddd)); 
+  background: -moz-linear-gradient(top, #f7f7f7, #ddd); 
+  -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+  -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.4); 
+  min-height: 3em;
+}
+
+.widget h3{
+  font-size: 0.8em;
+  border-radius: 0.6em 0.6em 0 0;
+  background: -webkit-gradient( linear, left top, left bottom, from(#888), to(#333)); 
+  background: -moz-linear-gradient(top, #888, #333); 
+  text-align: center;
+  color: #fff;
+  padding: 0.2em;
+  margin:0;
+}
+
+.widget ul > li:last-child {
+  border-radius: 0 0 0.6em 0.6em;
+}
+
+.widget ul{
+  font-size: 0.8em;
+  padding: 0em;
+  margin: 0em;
+}
+
+.widget li{
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  border-radius: 0;
+  margin: 0;  
+  padding: 0.3em;  
+  padding-left: 0.8em; 
+  padding-right: 0.8em; 
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: block;  
+}
+
+.widget li a {
+  font-size: 0.9em;  
+}
+
+.widget li:hover,
+.widget nav a:hover{
+    background: -webkit-gradient( linear, left top, left bottom, from(#eee), to(#bbb));
+    background: -moz-linear-gradient(top, #eee, #bbb); 
+}
+
+.widget li:active,
+.widget nav a:active{
+  background: -webkit-gradient( linear, left top, left bottom, from(#bbb), to(#eee));
+  background: -moz-linear-gradient(top, #bbb, #eee); 
+}
+
+.widget li.current{
+  background: -webkit-gradient( linear, left top, left bottom, from(#eee), to(#bbb));
+  background: -moz-linear-gradient(top, #eee, #bbb); 
+  font-weight: bold;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ccc;  
+}
+
+.widget li a span{  
+  margin-left:0.8em;
+  font-weight: normal;
+  opacity: 0.5;
+  float: right;
+}
+
+.widget ul > li.current:last-child{
+  border-top: 1px solid #ddd;
+  border-bottom: none;  
+}
+
+.widget ul > li.current:first-child{
+  border-top: none;
+  border-bottom: 1px solid #ccc;
+}
+
+#activatejs{
+  text-align: center;
+  font-size: 3em;
+}
+ 
+.ui-widget{
+	font-size: 0.8em;
+}

@@ -1,0 +1,8 @@
+<h3>${title}</h3>
+<ul>
+  {{each projects}}
+  <li data-project="${$index}" {{if ($index === current) }} class="current" {{/if}}>
+    <a href="#">${name}<span>(${count})</span></a>
+  </li>
+  {{/each}}
+</ul>

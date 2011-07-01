@@ -1,0 +1,211 @@
+.detail{
+  padding-bottom: 0.1em;
+  color: #666;
+}
+
+.detail li{
+  padding: 0.8em;
+  cursor: default;
+}
+
+.detail li:hover{
+  background: transparent;  
+}
+.detail label{
+/*   font-weight: bold; */
+  margin-right: 0.5em;
+  font-size: 0.8em;
+}
+
+.detail .property{
+  padding: 0.4em;
+}
+
+.detail .toolbar{
+  background: -webkit-gradient( linear, left top, left bottom, from(#eee), to(#ddd));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+  padding: 0.4em;
+}
+
+.detail .property label{
+	width: 6em;
+	display: inline-block;
+	text-align: right;
+}
+
+.detail .property input:focus,
+.detail .property input:hover{
+	cursor: text;
+	border-bottom: 1px solid #ccc;
+	background: transparent;
+}
+
+.detail .property input,
+.detail .property input:disabled,
+.detail .property input:disabled:hover{
+	border:none;
+	background: transparent;
+	cursor: default;
+}
+
+.detail textarea{
+  border: 1px solid #ccc;
+  background: #eee;
+  outline: none;
+  display: blocK;
+  margin: 0.5em;
+  resize: none;
+}
+
+.detail textarea:focus{
+  background: #fff;
+}
+
+.detail h3{
+  padding: 0.4em;
+}
+
+.detail h3 input{
+  color: white;
+  font-weight: bold;
+  text-align:center;
+  background: transparent;
+  border: none;
+}
+
+.detail h3 input:focus{
+  background: transparent;
+  text-decoration: underline;
+}
+
+.detail input{
+  background: transparent;
+  border: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;   
+  border: 1px solid #ccc;
+  background: #eee;
+  border-radius: 0;
+}
+
+.detail input:focus{
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none; 
+  border-color: #aaa;
+  background: #fff;
+}
+
+.detail button{
+  border: 1px solid #aaa;  
+  border-radius: 0.3em;
+  color: #555;
+  background-size: 100% 100%;  
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+}
+
+.detail button:disabled:hover,
+.detail button:disabled:active,
+.detail button:disabled{
+  color: #999;
+  cursor: default;
+  background: -webkit-gradient( linear, left top, left bottom, from(#ddd), to(#ccc));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+}
+
+.detail button:hover{
+  color: #222;
+}
+
+.detail button:active{
+  background: -webkit-gradient( linear, left top, left bottom, from(#ccc), to(#ddd));
+  background: -moz-linear-gradient(top, #eee, #ddd);
+}
+
+.detail button.due:disabled,
+.detail button.due:disabled:hover{
+  background-image: url("img/due.svg");  
+}
+
+.detail button.due{
+  background: transparent;
+  background-image: url("img/due.svg");
+  width: 1.4em;
+  height: 1.4em;
+  border: none;    
+  margin-bottom: -0.2em;
+  margin-right: 0.4em;
+}
+
+.detail button.due:hover{
+  background-image: url("img/due_hover.svg");
+}
+
+.detail button.done{
+  background-image: url("img/done.svg");
+  width: 1.4em;
+  height: 1.4em;
+  border: none; 
+  margin-bottom: -0.2em;
+  margin-right: 0.4em;
+}
+
+.detail button.done.done:hover{
+  background-image: url("img/undue.svg");
+}
+
+.detail button.favorite:disabled,
+.detail button.favorite:disabled:hover,
+.detail button.favorite{
+  width: 1.4em;
+  height: 1.4em;
+  background: transparent;
+  border: none;
+  margin-right: 0.4em;
+  background-image: url("img/fav.svg");
+}
+
+.detail button.favorite.active,
+.detail button.favorite:hover{
+  background-image: url("img/fav_hover.svg");
+}
+
+.detail button.wait:disabled,
+.detail button.wait:disabled:hover,
+.detail button.wait{
+  width: 1.4em;
+  height: 1.4em;
+  background: transparent;
+  border: none;
+  margin-right: 0.4em;
+  background-image: url("img/wait.svg");
+}
+
+.detail button.wait.active,
+.detail button.wait:hover{
+  background-image: url("img/wait_hover.svg");
+}
+
+.detail button.delete:disabled,
+.detail button.delete:disabled:hover,
+.detail button.delete{
+  width: 1.4em;
+  height: 1.4em;
+  background: transparent;
+  border: none;
+  margin-right: 0.4em;
+  background-image: url("img/delete.svg");
+}
+
+.detail button.delete:hover{
+  background-image: url("img/delete_hover.svg");
+}
+
+.detail input.duedate{
+  text-decoration: none;
+  -webkit-appearance: textfield;
+  -webkit-rtl-ordering: logical;
+  -webkit-user-select: text;
+	text-align: center;
+}

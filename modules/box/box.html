@@ -1,0 +1,8 @@
+<h3>${title}</h3>
+<ul>
+  {{each boxes}}
+  <li data-box="${$index}" {{if ($index === current) }} class="current" {{/if}}>
+    <a href="#">${name}<span>(${count})</span></a>
+  </li>
+  {{/each}}
+</ul>

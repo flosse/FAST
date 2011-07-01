@@ -1,0 +1,12 @@
+<div class="group">
+  <h3>${title}</h3>
+  <div class="items">
+  {{each entries}}
+    <div rel="${id}" class="item {{if (selected === id) }}selected {{/if}}{{if done }}done{{else}}due{{/if}}">
+        <button class="{{if done }}done{{else}}due{{/if}}"></button>
+        <button class="favorite {{if favorite }}active{{else}}inactive{{/if}}"></button>
+        <a href="#">${title}</a>
+    </div>
+  {{/each}}
+  </div>
+</div>
