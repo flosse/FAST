@@ -6,6 +6,7 @@ FAST is a little ToDo web application that acts as a demo for
 # Use it
 
 Play around with the [demo](http://scaleapp.org/demo/fast/) and have fun!
+You can also try the [latest development version](http://flosse.github.com/).
 
 ## Additional informations
 
