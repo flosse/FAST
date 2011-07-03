@@ -125,12 +125,12 @@
 
 .detail button.due:disabled,
 .detail button.due:disabled:hover{
-  background-image: url("img/due.svg");  
+  background-image: url("../../img/due.svg");  
 }
 
 .detail button.due{
   background: transparent;
-  background-image: url("img/due.svg");
+  background-image: url("../../img/due.svg");
   width: 1.4em;
   height: 1.4em;
   border: none;    
@@ -139,11 +139,11 @@
 }
 
 .detail button.due:hover{
-  background-image: url("img/due_hover.svg");
+  background-image: url("../../img/due_hover.svg");
 }
 
 .detail button.done{
-  background-image: url("img/done.svg");
+  background-image: url("../../img/done.svg");
   width: 1.4em;
   height: 1.4em;
   border: none; 
@@ -152,7 +152,7 @@
 }
 
 .detail button.done.done:hover{
-  background-image: url("img/undue.svg");
+  background-image: url("../../img/undue.svg");
 }
 
 .detail button.favorite:disabled,
@@ -163,12 +163,12 @@
   background: transparent;
   border: none;
   margin-right: 0.4em;
-  background-image: url("img/fav.svg");
+  background-image: url("../../img/fav.svg");
 }
 
 .detail button.favorite.active,
 .detail button.favorite:hover{
-  background-image: url("img/fav_hover.svg");
+  background-image: url("../../img/fav_hover.svg");
 }
 
 .detail button.wait:disabled,
@@ -179,12 +179,12 @@
   background: transparent;
   border: none;
   margin-right: 0.4em;
-  background-image: url("img/wait.svg");
+  background-image: url("../../img/wait.svg");
 }
 
 .detail button.wait.active,
 .detail button.wait:hover{
-  background-image: url("img/wait_hover.svg");
+  background-image: url("../../img/wait_hover.svg");
 }
 
 .detail button.delete:disabled,
@@ -195,11 +195,11 @@
   background: transparent;
   border: none;
   margin-right: 0.4em;
-  background-image: url("img/delete.svg");
+  background-image: url("../../img/delete.svg");
 }
 
 .detail button.delete:hover{
-  background-image: url("img/delete_hover.svg");
+  background-image: url("../../img/delete_hover.svg");
 }
 
 .detail input.duedate{
