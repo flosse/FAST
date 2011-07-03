@@ -25,7 +25,7 @@
 }
 
 .list li button.due{
-  background-image: url("img/due.svg");
+  background-image: url("../../img/due.svg");
   border: none;
 
 }
@@ -35,15 +35,15 @@
 }
 
 .list li button.due:hover{
-  background-image: url("img/due_hover.svg");
+  background-image: url("../../img/due_hover.svg");
 }
 
 .list li button.done{
-  background-image: url("img/done.svg");
+  background-image: url("../../img/done.svg");
 }
 
 .list li button.done.done:hover{
-/* background-image: url("img/undue.svg"); */
+/* background-image: url("../../img/undue.svg"); */
 }
 
 .list li.done a{
@@ -51,9 +51,9 @@
 }
 
 .list li button.favorite{
-  background-image: url("img/fav.svg");
+  background-image: url("../../img/fav.svg");
 }
 .list li button.favorite.active,
 .list li button.favorite:hover{
-  background-image: url("img/fav_hover.svg");
+  background-image: url("../../img/fav_hover.svg");
 }
