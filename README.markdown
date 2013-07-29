@@ -1,12 +1,27 @@
 # FAST - Free All Scrambled Thoughts
 
 FAST is a little ToDo web application that acts as a demo for
-[scaleApp](https://github.com/flosse/scaleApp).
+[scaleApp](http://www.scaleapp.org).
 
 # Use it
 
-Play around with the [demo](http://scaleapp.org/demo/fast/) and have fun!
-You can also try the [latest development version](http://flosse.github.com/FAST/).
+Play around and have fun!
+
+## WARNING!
+
+This demo is totally out of date!!
+For up to date [scaleApp](http://www.scaleapp.org) examples go to
+[scaleApp's GitHub Repository](https://github.com/flosse/scaleApp/tree/master/examples)
+
+
+[http://flosse.github.com/FAST/](http://flosse.github.com/FAST/) reflects
+this repository but there is a more up to date version on
+[scaleapp.org/demo/fast/](http://scaleapp.org/demo/fast/).
+
+
+If you're interestet in this application idea in any way, please let
+[me](mailto:mail@markus-kohlhase.de) know (I'm going to create a complete
+rewrite with a backend and XMPP support for real and serious usage).
 
 ## Additional informations
 
